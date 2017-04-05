@@ -72,8 +72,8 @@ public class MainPage extends WebPage{
 	}
 
 	public static WebDriver remoteDriver(){
-		SauceLabRunner.authentication.setUsername("Username");
-		SauceLabRunner.authentication.setAccessKey("AccessKey");
+		SauceLabRunner.authentication.setUsername("lifescience");
+		SauceLabRunner.authentication.setAccessKey(System.getenv("SAUCE_ACCESS_KEY"));
 		DesiredCapabilities caps = DesiredCapabilities.chrome();
 		caps.setCapability("platform", "Windows 10");
 		caps.setCapability("version","57.0");
