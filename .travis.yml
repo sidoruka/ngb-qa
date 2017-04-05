@@ -1,0 +1,11 @@
+language: java
+sudo: required
+os:
+  - linux
+dist: trusty
+script: mvn clean test -P chrome_opensource -e
+addons:
+  sauce_connect:
+    username: lifescience
+  jwt:
+    secure: "mJqD6YJGamGz4r8RR/fPvafU1qWApDI+BbDHdeZaAcniQd+XfEQOlzEByXDNmNMx1McwbxW2w7rrLsmSrwQi2rLEsHib2MHiKO7Wp6eY4xABCdZAmVfIEnKBmKbEfRQ5qN+i3yO30bl5M3zsge6L21xXxIXodJtzpc2AA8s3PSaYeXpfkoy79KReIHSfeWjXJ+CzXS6zMoeNJq0ajNNlYgZq2SHvknp7DXfdaLwk9eiQUKEnzIKxsqfxaHNaDOrxgFfUhD8+Zcd9kpjO6WUNmBho5nu9qoA0T+Oy6sAAOaL3iEtEbr4r08V4YnhNg8WLSYb7k94ywrhltzji8Q/3zPscY2cuHW1FpigPYAw39iHIeteFiXoL5hjRpaTs8361kXAjkqoR9hxkNVE2GP/LO9X45h9TUp9/nWkKMwGPeBRKsjLu76hKhyOW3IzwGUTYyTWJ2jhoFwOWFHWr6xfHTBhg397FP/ex54HvWN0ztP8SOn3ZFeNkbkhi4C6oH2g8Z7Wp/nfNvz56LBCULUTDQXhg+yue0DgVbRtIIPzuYRpWtpjT7olrnL5UNYqPZO9hp7JkEEdX+Mg+QS7B6wGRowL7i7GpWN23Ls4jNP1BtuHhN/KtZLS10c9JEGqxjFb6YhhLOum88iIDMExWqhZIUsSbYYnWtvsRz7v/1vycaUc="
