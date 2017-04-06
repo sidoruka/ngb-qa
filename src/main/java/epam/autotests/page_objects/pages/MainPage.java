@@ -78,7 +78,8 @@ public class MainPage extends WebPage{
 		caps.setCapability("platform", "Windows 10");
 		caps.setCapability("version","57.0");
 		caps.setCapability("screenResolution", "1280x1024");
-		WebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
+        RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
+        caps.setCapability("name", driver.getSessionId());
 		return driver;
 	}
 

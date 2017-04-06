@@ -25,7 +25,7 @@ public abstract class TestBase extends TestNGBase {
 
 	@BeforeSuite(alwaysRun = true)
 	public static void setUp() throws Exception {
-		WebSettings.useDriver(() -> mainPage.remoteDriver());
+		//WebSettings.useDriver(() -> mainPage.remoteDriver());
 		init(NGB_Site.class);
 		mainPage.open();
 		//moveWindowSizeToCenterScreeen(1200,1000);
