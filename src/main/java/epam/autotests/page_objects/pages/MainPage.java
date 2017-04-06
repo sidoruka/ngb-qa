@@ -80,6 +80,7 @@ public class MainPage extends WebPage{
 		caps.setCapability("screenResolution", "1280x1024");
         RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
         caps.setCapability("name", driver.getSessionId());
+        System.out.println(driver.getSessionId());
 		return driver;
 	}
 
