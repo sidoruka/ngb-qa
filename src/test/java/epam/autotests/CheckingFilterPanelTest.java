@@ -20,38 +20,38 @@ import static epam.autotests.page_objects.site.NGB_Site.projectPage;
 
 public class CheckingFilterPanelTest extends TestBase{
 
-//	@BeforeClass
-//	public void preparations(){
-//        projectPage.closeAllTracks();
-//        projectPage.openPanel(RESTORE_DEFAULT);
-//		isInState(OPEN_DATASETS_PANEL);
-//		mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
-//		mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-//		mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
-//		isInState(OPEN_VARIANTS_PANEL);
-//		System.out.println("=== CheckingFilterPanelTest.preparation(); @BeforeClass");
-//	}
-//	@Ignore
-//	@Test(priority=1)
-//	public void checkingTypeOfVarGroup(){
-//		//#10.5
-//        projectPage.openFilter();
-//		projectPage.filterPanel.selectFilter(TYPE_VARIANT, "INV");
-//		isInState(OPEN_VARIANTS_PANEL);
-//		Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("INV"));
-//        projectPage.openFilter();
-//		projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DEL");
-//        isInState(OPEN_VARIANTS_PANEL);
-//        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DEL"));
-//        projectPage.filterPanel.selectFilter(TYPE_VARIANT, "BND");
-//        isInState(OPEN_VARIANTS_PANEL);
-//        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("BND"));
-//        projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DUP");
-//        isInState(OPEN_VARIANTS_PANEL);
-//        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DUP"));
-//		projectPage.filterPanel.clearFilterPanel();
-//		System.out.println("=== CheckingFilterPanelTest.checkingTypeOfVarGroup(); @Test(priority=1)");
-//	}
+	@BeforeClass
+	public void preparations(){
+        projectPage.closeAllTracks();
+        projectPage.openPanel(RESTORE_DEFAULT);
+		isInState(OPEN_DATASETS_PANEL);
+		mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
+		mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
+		mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
+		isInState(OPEN_VARIANTS_PANEL);
+		System.out.println("=== CheckingFilterPanelTest.preparation(); @BeforeClass");
+	}
+
+	@Test(priority=1)
+	public void checkingTypeOfVarGroup(){
+		//#10.5
+        projectPage.openFilter();
+		projectPage.filterPanel.selectFilter(TYPE_VARIANT, "INV");
+		isInState(OPEN_VARIANTS_PANEL);
+		Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("INV"));
+        projectPage.openFilter();
+		projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DEL");
+        isInState(OPEN_VARIANTS_PANEL);
+        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DEL"));
+        projectPage.filterPanel.selectFilter(TYPE_VARIANT, "BND");
+        isInState(OPEN_VARIANTS_PANEL);
+        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("BND"));
+        projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DUP");
+        isInState(OPEN_VARIANTS_PANEL);
+        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DUP"));
+		projectPage.filterPanel.clearFilterPanel();
+		System.out.println("=== CheckingFilterPanelTest.checkingTypeOfVarGroup(); @Test(priority=1)");
+	}
 //
 //	@Ignore
 //	@Test(priority=3)
@@ -72,11 +72,11 @@ public class CheckingFilterPanelTest extends TestBase{
 //		System.out.println("=== CheckingFilterPanelTest.checkGeneGroup(); @Test(priority=3)");
 //	}
 //
-//	@AfterClass
-//    public void unSelectAllDatasets()
-//	{
-//		projectPage.closeAllTracks();
-//		projectPage.openPanel(RESTORE_DEFAULT);
-//        System.out.println("=== CheckingFilterPanelTest.unSelectAllDatasets(); @AfterMethod");
-//    }
+	@AfterClass
+    public void unSelectAllDatasets()
+	{
+		projectPage.closeAllTracks();
+		projectPage.openPanel(RESTORE_DEFAULT);
+        System.out.println("=== CheckingFilterPanelTest.unSelectAllDatasets(); @AfterMethod");
+    }
 }
