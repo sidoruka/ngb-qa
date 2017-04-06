@@ -1,5 +1,6 @@
 package epam.autotests;
 
+import com.epam.commons.Timer;
 import com.epam.web.matcher.testng.Assert;
 import epam.autotests.page_objects.enums.VarTableColumns;
 import epam.autotests.page_objects.sections.VariationInfoModalWindow;
@@ -23,36 +24,34 @@ import static epam.autotests.page_objects.site.NGB_Site.projectPage;
 
 public class CheckingProjectPageTest extends TestBase {
 
-//    private final String projectName = "SV_Sample";
-//
-//    @Test(priority = 2)
-//    public void variationPanel() {
-//        projectPage.closeAllTracks();
-//        projectPage.openPanel(RESTORE_DEFAULT);
-//        isInState(OPEN_DATASETS_PANEL);
-//        VariationInfoModalWindow.waitVisualizer("//*[@id=\"1489086710371-grid-container\"]");
-//        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
-//        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-//        isInState(OPEN_VARIANTS_PANEL);
-//        projectPage.variantsPanel.checkSetOfColumns("Type", "Chr", "Gene", "Position", "Info");
-//        isInState(OPEN_DATASETS_PANEL);
-//        mainPage.datasetsPanel.unSelect("/SV_Sample1/sample_1-lumpy.vcf");
-//        mainPage.datasetsPanel.unSelect("/SV_Sample2/sample_2-lumpy.vcf");
-//        System.out.println("=== CheckingProjectPageTest.variationPanel(); @Test(priority=2)");
-//    }
-//    @Test(priority = 3)
-//    public void comparisonDataFromFileAndTableSample2lumpy() {
-//        projectPage.closeAllTracks();
-//        projectPage.openPanel(RESTORE_DEFAULT);
-//        isInState(OPEN_DATASETS_PANEL);
-//        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-//        isInState(OPEN_VARIANTS_PANEL);
-//        projectPage.variantsPanel.variantsTable.setSorting(POSITION, ASC);
-//        projectPage.variantsPanel.checkDataWithFile(SMPL2_LUMPY);
-//        isInState(OPEN_DATASETS_PANEL);
-//        mainPage.datasetsPanel.unSelect("/SV_Sample2/sample_2-lumpy.vcf");
-//        System.out.println("=== CheckingProjectPageTest.comparisonDataFromFileAndTableSample2lumpy(); @Test(priority=3)");
-//    }
+    @Test(priority = 0)
+    public void variationPanel() {
+        projectPage.closeAllTracks();
+        projectPage.openPanel(RESTORE_DEFAULT);
+        isInState(OPEN_DATASETS_PANEL);
+        VariationInfoModalWindow.waitVisualizer("//*[@id=\"1489086710371-grid-container\"]");
+        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
+        isInState(OPEN_VARIANTS_PANEL);
+        projectPage.variantsPanel.checkSetOfColumns("Type", "Chr", "Gene", "Position", "Info");
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.unSelect("/SV_Sample1/sample_1-lumpy.vcf");
+        mainPage.datasetsPanel.unSelect("/SV_Sample2/sample_2-lumpy.vcf");
+        System.out.println("=== CheckingProjectPageTest.variationPanel(); @Test(priority=0)");
+    }
+    @Test(priority = 1)
+    public void comparisonDataFromFileAndTableSample2lumpy() {
+        projectPage.closeAllTracks();
+        projectPage.openPanel(RESTORE_DEFAULT);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
+        isInState(OPEN_VARIANTS_PANEL);
+        projectPage.variantsPanel.variantsTable.setSorting(POSITION, ASC);
+        projectPage.variantsPanel.checkDataWithFile(SMPL2_LUMPY);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.unSelect("/SV_Sample2/sample_2-lumpy.vcf");
+        System.out.println("=== CheckingProjectPageTest.comparisonDataFromFileAndTableSample2lumpy(); @Test(priority=1)");
+    }
 //    @Test(priority = 6)
 //    public void comparisonDataFromFileAndTableSample1lumpy() {
 //        projectPage.closeAllTracks();
@@ -98,10 +97,11 @@ public class CheckingProjectPageTest extends TestBase {
 //        projectPage.openPanel(RESTORE_DEFAULT);
 //        System.out.println("=== CheckingProjectPageTest.checkingVariantsSorting(); @Test(priority=7)");
 //    }
-//    @AfterClass(alwaysRun=true)
-//    public void resetBrowser(){
-//        projectPage.closeAllTracks();
-//        projectPage.openPanel(RESTORE_DEFAULT);
-//        System.out.println("=== CheckingProjectPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");;
-//    }
+    @AfterClass(alwaysRun=true)
+    public void resetBrowser(){
+        projectPage.closeAllTracks();
+        Timer.sleep(1000);
+        projectPage.openPanel(RESTORE_DEFAULT);
+        System.out.println("=== CheckingProjectPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");;
+    }
 }

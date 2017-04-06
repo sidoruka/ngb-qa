@@ -33,10 +33,11 @@ public class CheckingMainPageTest extends TestBase{
 		System.out.println("=== CheckingMainPageTest.checkingDataPresence_Tiles(); @Test(priority=0)");
 	}
 
-//	@AfterClass(alwaysRun=true)
-//	public void resetBrowser(){
-//		projectPage.closeAllTracks();
-//		projectPage.openPanel(RESTORE_DEFAULT);
-//		System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
-//	}
+	@AfterClass(alwaysRun=true)
+	public void resetBrowser(){
+		projectPage.closeAllTracks();
+		Timer.sleep(1000);
+		projectPage.openPanel(RESTORE_DEFAULT);
+		System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
+	}
 }
