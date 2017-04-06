@@ -4,8 +4,6 @@ import com.epam.commons.Timer;
 import epam.autotests.utils.TestBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
 
 import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
 import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_SETTING;
@@ -15,11 +13,10 @@ import static epam.autotests.page_objects.site.NGB_Site.projectPage;
 import static epam.autotests.page_objects.site.NGB_Site.settingWindow;
 
 
-@Features("Feature 1")
+
 public class CheckingMainPageTest extends TestBase{
 
 	@Test(priority=0)
-	@Stories("Existing of settings tabs validation")
 	public void checkingSettingsContent(){
 		isInState(OPEN_SETTING);
 		if(settingWindow.isDisplayed()) {
@@ -36,10 +33,10 @@ public class CheckingMainPageTest extends TestBase{
 		System.out.println("=== CheckingMainPageTest.checkingDataPresence_Tiles(); @Test(priority=0)");
 	}
 
-	@AfterClass(alwaysRun=true)
-	public void resetBrowser(){
-		projectPage.closeAllTracks();
-		projectPage.openPanel(RESTORE_DEFAULT);
-		System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
-	}
+//	@AfterClass(alwaysRun=true)
+//	public void resetBrowser(){
+//		projectPage.closeAllTracks();
+//		projectPage.openPanel(RESTORE_DEFAULT);
+//		System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
+//	}
 }
