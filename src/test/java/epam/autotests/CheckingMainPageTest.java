@@ -40,6 +40,6 @@ public class CheckingMainPageTest extends TestBase{
 	public void resetBrowser(){
 		projectPage.closeAllTracks();
 		projectPage.openPanel(RESTORE_DEFAULT);
-		System.out.println("=== CheckingBamTracksSorting.resetBrowser(); @AfterClass(alwaysRun=true)");
+		System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
 	}
 }

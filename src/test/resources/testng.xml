@@ -13,17 +13,11 @@
     <test name="ProjectPageTest">
         <parameter name="path" value="/"/>
         <classes>
-            <class name="epam.autotests.CheckingBamReadsView"/>
-            <class name="epam.autotests.CheckingBamTracksSorting"/>
             <class name="epam.autotests.CheckingFilterPanelTest"/>
             <class name="epam.autotests.CheckingMainPageTest"/>
             <class name="epam.autotests.CheckingProjectPageTest"/>
             <class name="epam.autotests.CheckingSessionsPanelTest"/>
-            <!--<class name="epam.autotests.CheckingTrackBed"/>-->
             <class name="epam.autotests.CheckingTrackGene"/>
-            <!--<class name="epam.autotests.CheckingURls"/>-->
-            <class name="epam.autotests.CheckingVariations"/>
-            <class name="epam.autotests.CheckingVCFTracks"/>
         </classes>
     </test>
 </suite>

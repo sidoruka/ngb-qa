@@ -35,8 +35,6 @@ public class CheckingFilterPanelTest extends TestBase{
 		mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
 		mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
 		isInState(OPEN_VARIANTS_PANEL);
-		//projectPage.filterPanel.selectFilter(ACTIVE_VCF, "sample_1-lumpy.vcf");
-
 		System.out.println("=== CheckingFilterPanelTest.preparation(); @BeforeClass");
 	}
 	@Ignore
@@ -71,13 +69,11 @@ public class CheckingFilterPanelTest extends TestBase{
 		projectPage.openPanel(VARIANTS);
 		projectPage.variantsPanel.checkVarGenes("EML4");
         projectPage.filterPanel.deleteAllAddedGenes();
-
         projectPage.openFilter();
 		projectPage.filterPanel.selectFilter(GENE, "BCOR");
 		projectPage.openPanel(VARIANTS);
 		projectPage.variantsPanel.checkVarGenes("BCOR");
         projectPage.filterPanel.deleteAllAddedGenes();
-
         projectPage.openFilter();
 		projectPage.filterPanel.selectFilter(GENE, "BCOR", "EML4");
 		projectPage.variantsPanel.checkVarGenes("BCOR", "EML4");
