@@ -2,7 +2,6 @@ package epam.autotests;
 
 import com.epam.web.matcher.testng.Assert;
 import epam.autotests.utils.TestBase;
-import org.junit.Ignore;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -52,26 +51,25 @@ public class CheckingFilterPanelTest extends TestBase{
 		projectPage.filterPanel.clearFilterPanel();
 		System.out.println("=== CheckingFilterPanelTest.checkingTypeOfVarGroup(); @Test(priority=1)");
 	}
-//
-//	@Ignore
-//	@Test(priority=3)
-//	public void checkGeneGroup(){
-//        projectPage.openFilter();
-//		projectPage.filterPanel.selectFilter(GENE, "EML4");
-//		projectPage.openPanel(VARIANTS);
-//		projectPage.variantsPanel.checkVarGenes("EML4");
-//        projectPage.filterPanel.deleteAllAddedGenes();
-//        projectPage.openFilter();
-//		projectPage.filterPanel.selectFilter(GENE, "BCOR");
-//		projectPage.openPanel(VARIANTS);
-//		projectPage.variantsPanel.checkVarGenes("BCOR");
-//        projectPage.filterPanel.deleteAllAddedGenes();
-//        projectPage.openFilter();
-//		projectPage.filterPanel.selectFilter(GENE, "BCOR", "EML4");
-//		projectPage.variantsPanel.checkVarGenes("BCOR", "EML4");
-//		System.out.println("=== CheckingFilterPanelTest.checkGeneGroup(); @Test(priority=3)");
-//	}
-//
+
+	@Test(priority=3)
+	public void checkGeneGroup(){
+        projectPage.openFilter();
+		projectPage.filterPanel.selectFilter(GENE, "EML4");
+		projectPage.openPanel(VARIANTS);
+		projectPage.variantsPanel.checkVarGenes("EML4");
+        projectPage.filterPanel.deleteAllAddedGenes();
+        projectPage.openFilter();
+		projectPage.filterPanel.selectFilter(GENE, "BCOR");
+		projectPage.openPanel(VARIANTS);
+		projectPage.variantsPanel.checkVarGenes("BCOR");
+        projectPage.filterPanel.deleteAllAddedGenes();
+        projectPage.openFilter();
+		projectPage.filterPanel.selectFilter(GENE, "BCOR", "EML4");
+		projectPage.variantsPanel.checkVarGenes("BCOR", "EML4");
+		System.out.println("=== CheckingFilterPanelTest.checkGeneGroup(); @Test(priority=3)");
+	}
+
 	@AfterClass
     public void unSelectAllDatasets()
 	{

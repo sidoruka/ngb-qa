@@ -28,7 +28,7 @@ public abstract class TestBase extends TestNGBase {
 		WebSettings.useDriver(() -> mainPage.remoteDriver());
 		init(NGB_Site.class);
 		mainPage.open();
-		//moveWindowSizeToCenterScreeen(1280,1024);
+		//moveWindowSizeToCenterScreeen(1200,1000);
 		logger.info("Run Tests");
 	}
 

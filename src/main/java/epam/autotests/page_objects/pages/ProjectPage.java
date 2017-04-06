@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
+import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_DATASETS_PANEL;
 import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_VARIANTS_PANEL;
 import static epam.autotests.page_objects.enums.Views.*;
 import static epam.autotests.page_objects.site.NGB_Site.*;
@@ -100,7 +101,8 @@ public class ProjectPage extends WebPage {
         if (closeAllTracksButton.isDisplayed()) {
             closeAllTracksButton.clickCenter();
             popUpOKButton.click();
-           assertEquals(true,mainPage.datasetsPanel.checkBoxIsSelected(),"dataset or file stil selected");
+            isInState(OPEN_DATASETS_PANEL);
+            assertEquals(true,mainPage.datasetsPanel.checkBoxIsSelected(),"dataset or file stil selected");
         }
 
     }
