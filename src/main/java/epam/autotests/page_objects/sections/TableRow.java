@@ -52,7 +52,9 @@ public class TableRow extends Section{
 		for (int i : columnsIndex) {
 			if(rowCells.get(i).getWebElement().findElements(By.cssSelector("[aria-label='info']")).size()>0){
 				clickCell(i);
-				values[counter++] = variationInfoWindow.getId();
+                values[counter++] = variationInfoWindow.getId();
+//				variationInfoWindow.selectTab(VariationInfoModalWindow.AnnotationsTabs.INFO);
+//				values[counter++] = variationInfoWindow.getQualityValue();
 				variationInfoWindow.closeWindow();
 			} else {
 				values[counter++] = rowCells.get(i).get(By.cssSelector(".ui-grid-cell-contents,.md-label")).getText();

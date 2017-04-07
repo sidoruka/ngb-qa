@@ -9,6 +9,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
+import static epam.autotests.page_objects.enums.ExternalDataFiles.SMPL1_LUMPY;
+import static epam.autotests.page_objects.enums.ExternalDataFiles.SMPL2_LUMPY;
 import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_DATASETS_PANEL;
 import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_VARIANTS_PANEL;
 import static epam.autotests.page_objects.enums.SortingTypes.ASC;
@@ -35,6 +37,32 @@ public class CheckingProjectPageTest extends TestBase {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingProjectPageTest.variationPanel(); @Test(priority=0)");
+    }
+    @Test(priority = 3)
+    public void comparisonDataFromFileAndTableSample2lumpy() {
+        projectPage.closeAllTracks();
+        projectPage.openPanel(RESTORE_DEFAULT);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
+        isInState(OPEN_VARIANTS_PANEL);
+        projectPage.variantsPanel.variantsTable.setSorting(POSITION, ASC);
+        projectPage.variantsPanel.checkDataWithFile(SMPL2_LUMPY);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.unSelect("/SV_Sample2/sample_2-lumpy.vcf");
+        System.out.println("=== CheckingProjectPageTest.comparisonDataFromFileAndTableSample2lumpy(); @Test(priority=3)");
+    }
+    @Test(priority = 6)
+    public void comparisonDataFromFileAndTableSample1lumpy() {
+        projectPage.closeAllTracks();
+        projectPage.openPanel(RESTORE_DEFAULT);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
+        isInState(OPEN_VARIANTS_PANEL);
+        projectPage.variantsPanel.variantsTable.setSorting(POSITION, ASC);
+        projectPage.variantsPanel.checkDataWithFile(SMPL1_LUMPY);
+        isInState(OPEN_DATASETS_PANEL);
+        mainPage.datasetsPanel.unSelect("/SV_Sample1/sample_1-lumpy.vcf");
+        System.out.println("=== CheckingProjectPageTest.comparisonDataFromFileAndTableSample1lumpy(); @Test(priority=6)");
     }
     @Test(priority = 7)
     public void checkingVariantsSorting() {

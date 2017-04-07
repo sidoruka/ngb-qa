@@ -8,7 +8,7 @@ import java.util.List;
 public class MyFileReader {
 
 	public static File loadExternalFile(String fileName){
-		return  new File(new File("").getAbsolutePath() + "\\src\\main\\resources\\"+fileName);
+		return  new File(new File("").getAbsolutePath() + "\\" + fileName);
 	}
 
 	public static List<String[]> readFile(File fileName, String...requiredColumns){

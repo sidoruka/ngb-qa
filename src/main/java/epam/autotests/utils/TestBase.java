@@ -52,12 +52,6 @@ public abstract class TestBase extends TestNGBase {
 		LocalDate dt1, dt2;
 		dt1 = getLocalDateFromString(date1, "-");
 		dt2 = getLocalDateFromString(date2, "-");
-		/*int[] dt1, dt2;
-		dt1 = Arrays.asList(date1.split("-")).stream().mapToInt(Integer::parseInt).toArray();
-		dt2 = Arrays.asList(date2.split("-")).stream().mapToInt(Integer::parseInt).toArray();
-		
-		LocalDate dt3 = new LocalDate(dt1[2], dt1[0], dt1[1]);
-		LocalDate dt4 = new LocalDate(dt2[2], dt2[0], dt2[1]);*/
 		return dt1.compareTo(dt2);
 	}
 

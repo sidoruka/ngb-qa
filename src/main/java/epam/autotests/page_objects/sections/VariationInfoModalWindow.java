@@ -26,7 +26,7 @@ import static org.testng.Assert.*;
 
 public class VariationInfoModalWindow extends Section {
 
-	private static enum AnnotationsTabs {
+	public static enum AnnotationsTabs {
 		VISUALIZER, INFO;
 	}
 
