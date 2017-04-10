@@ -4,10 +4,7 @@ import com.epam.jdi.uitests.web.settings.WebSettings;
 import com.epam.jdi.uitests.web.testng.testRunner.TestNGBase;
 import epam.autotests.page_objects.site.NGB_Site;
 import org.joda.time.LocalDate;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 import java.io.File;
@@ -31,12 +28,6 @@ public abstract class TestBase extends TestNGBase {
 		logger.info("Run Tests");
 	}
 
-	@BeforeClass
-	public static void openViewPage() throws Exception{
-		/*if(!NGB_Site.isPageOpened("View"))
-			NGB_Site.mainPage.selectLastVersion();*/
-	}
-
 	public static boolean isExpressionMatched(String regexp, String string){
 		Pattern pattern = Pattern.compile(regexp);
 		Matcher matcher = pattern.matcher(string);
@@ -48,26 +39,11 @@ public abstract class TestBase extends TestNGBase {
 		WebSettings.getDriver().quit();
 	}
 
-	public static int compareDates(String date1, String date2){
-		LocalDate dt1, dt2;
-		dt1 = getLocalDateFromString(date1, "-");
-		dt2 = getLocalDateFromString(date2, "-");
-		return dt1.compareTo(dt2);
-	}
-
 	public static LocalDate getLocalDateFromString(String date, String delimiter){
 		int[] dt = Arrays.asList(date.split(delimiter)).stream().mapToInt(Integer::parseInt).toArray();
 		return new LocalDate(dt[2], dt[0], dt[1]);
 	}
 
-
-
-	public static int[] intListToIntArray(List<Integer> list){
-		int[] ret = new int[list.size()];
-		for(int i = 0;i < ret.length;i++)
-			ret[i] = list.get(i);
-		return ret;
-	}
 
 	public static boolean compareStringArrays(String[] array1, String[] array2){
 		if(array1.length != array2.length)
@@ -87,14 +63,6 @@ public abstract class TestBase extends TestNGBase {
 				return false;
 		}
 		return true;
-	}
-
-	public static void moveWindowSizeToCenterScreeen(int w, int h) {
-		Dimension maxiwin =mainPage.getDriver().manage().window().getSize();
-		if(w<maxiwin.getWidth() && h<maxiwin.getHeight()) {
-			mainPage.getDriver().manage().window().setSize(new Dimension(w, h));
-			mainPage.getDriver().manage().window().setPosition(new Point((maxiwin.getWidth() - w) / 2, (maxiwin.getHeight() - h) / 2));
-		}
 	}
 
 	public static String CurrentDir() {
