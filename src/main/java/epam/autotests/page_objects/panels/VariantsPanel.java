@@ -2,32 +2,24 @@ package epam.autotests.page_objects.panels;
 
 import com.epam.commons.Timer;
 import com.epam.jdi.uitests.web.selenium.elements.common.Button;
-import com.epam.jdi.uitests.web.selenium.elements.common.CheckBox;
 import com.epam.web.matcher.junit.Assert;
-
-import epam.autotests.page_objects.enums.ExternalDataFiles;
-import epam.autotests.page_objects.enums.VarTableColumns;
 import epam.autotests.page_objects.general.Panel;
 import epam.autotests.page_objects.general.PropertyVCF;
 import epam.autotests.page_objects.sections.CustomTable;
 import epam.autotests.page_objects.sections.GridPanel;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.testng.asserts.SoftAssert;
+import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
-import org.testng.asserts.SoftAssert;
-import ru.yandex.qatools.allure.annotations.Step;
-
-import static epam.autotests.page_objects.site.NGB_Site.*;
-import static epam.autotests.utils.TestBase.intListToIntArray;
-import static epam.autotests.utils.TestBase.*;
-import static epam.autotests.utils.MyFileReader.*;
+import static epam.autotests.page_objects.site.NGB_Site.compareTwoStringLists;
+import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
 
 /**
  * Created by Vsevolod_Adrianov on 8/8/2016.
@@ -90,18 +82,6 @@ public class VariantsPanel extends Panel {
 	@Step
 	public void checkSetOfColumns(String...columns){
 		Assert.isTrue(compareTwoStringLists(gridPanel.columnsList.getTextList(), Arrays.asList(columns)), "Wrong set of columns");
-	}
-
-	@Step
-	public void checkDataWithFile(ExternalDataFiles fileName) {
-		List<String[]> rowData = variantsTable.collectAllRowData(0,1,3,4);
-		List<String[]> dataFromFile = readFile(loadExternalFile(fileName.value), "SVTYPE", "CHROM", "POS", "ID");
-		SoftAssert soft_assert = new SoftAssert();
-		soft_assert.assertTrue(compareListOfArrays(rowData, dataFromFile), "Two lists of arrays are equal");
-		for (int i = 0; i < rowData.size(); i++) {
-			soft_assert.assertTrue(compareStringArrays(rowData.get(i), dataFromFile.get(i)), "Row Data from app:  " + rowData.get(i).toString() + "; Row Data from file: " + dataFromFile.get(i).toString() + "\n");
-		}
-		soft_assert.assertAll();
 	}
 
 	@Step
