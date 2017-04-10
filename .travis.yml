@@ -3,9 +3,4 @@ sudo: required
 os:
   - linux
 dist: trusty
-addons:
-  sauce_connect:
-    username: lifescience
-  jwt:
-    secure: "MPE8alOl/XPNORc3zKolEJ+GPRzlxPCp6rU1Z0bunBStJ8kxi6d4KUhzQ9iDzspylJWp8e3SILRwBg72dasidyK/bmrzgnYp+eTwPv2KJ1yfAwrBQT/jH70u7gg7kLAZU3A4nY6p8IZ86djL3Q1piahXMn7K/K8zRp+pwFYzv/IXekbLvd4c7w/VH1aXxIgyUwx7xu9VbQm2057qN85mj9DMKWxZ+jtR45YfBM3M0bQOmkDhxXa1ZcihBoD3hSZmNsmcFEP+H3aZ8eFCtbSJaU3hopOEojMxYAptN/XbK7B+0H83SbgfcXqOmgbfNIIf192ghgQJyJrtvrmG8/iLYNtrETp+9K2O4//m8VuwPeTlphrePm4+E88/GRG4DO0oFCLc3Fx6OAtJ1bGTNgiRf57QQshLYsksfE2W96N9uT+QbUVsWpa+saYkn1ZZh5Y/EgA90+QTE5EtRz4kAZP9Nz43JCzIXp/rmwXl0jvr3iyK05ij4Jq2U/vsE96rB60t8AAPcVDE6xOMybv345KeXpYE7WG10MXvVOUAnUSVPo5XjFMADh6VOs09hV8ODzMbOKcCNOdzY3zGTEpTF2rMfI4TikyBr7UgKNBSi2BhwUGtbOxGJaA8w7dkxiVPJkQl9l8r/YYb/0G4ARph6RRMHDEXEllZSXVD8R6yNjFOQcM="
 script: mvn clean test -P chrome_opensource -e
