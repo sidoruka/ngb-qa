@@ -79,7 +79,7 @@ public class MainPage extends WebPage{
 		caps.setCapability("version","57.0");
 		caps.setCapability("screenResolution", "1280x1024");
         RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
-        driver.executeScript("sauce:job-name= Autotest from travis job #"+System.getenv("TRAVIS_JOB_NUMBER")+"\"");
+        driver.executeScript("sauce:job-name=My awessome job"+System.getenv("BRANCH"));
 		return driver;
 	}
 
