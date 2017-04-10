@@ -24,7 +24,7 @@ public class MainPage extends WebPage{
 		caps.setCapability("platform", "Windows 10");
 		caps.setCapability("version","57.0");
 		caps.setCapability("screenResolution", "1280x1024");
-        RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), null);
+        RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
 		driver.executeScript("sauce:job-name= Autotest from travis job #"+System.getenv("TRAVIS_JOB_NUMBER")+"\"");
 		return driver;
 	}
