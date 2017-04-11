@@ -37,17 +37,26 @@ mvn clean test -P safari_opensource -e
 ```
 
 Additional parameters:
+
 -Ddomain=${NGB_address}
+
 -Ddriver=[chrome|firefox|ie|edge|safari]
+
 -Drun.type=[local|remote]
+
 -Dos=${opearating system with version}
+
 -Dbrowser.version=${browser_version_number}
+
 -Dscreen.resolution=${INTxINT}
+
 Example:
+
 ```
 mvn clean test -P chrome_opensource -Dos="Widows 8.1" -Dbrowser.version=50.0
 ```
 Run tests on Windows 8.1, Chrome version 50.0
 
 Note:
+
 use https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/ for validating version of OS, browser etc.
