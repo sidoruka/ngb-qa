@@ -12,7 +12,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.asserts.SoftAssert;
-import ru.yandex.qatools.allure.annotations.Step;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,97 +27,90 @@ import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
  */
 
 public class VariantsPanel extends Panel {
-	@FindBy(css = ".md-transition-in")
-	private PropertyVCF VCFPanel;
+    @FindBy(css = ".ui-grid-contents-wrapper>.ui-grid-render-container-body")
+    public CustomTable variantsTable;
+    @FindBy(css = ".md-transition-in")
+    private PropertyVCF VCFPanel;
+    @FindBy(xpath = ".//ngb-columns//button")
+    private Button addColumns;
+    @FindBy(xpath = ".//div[@role='grid']")
+    private GridPanel gridPanel;
 
-	@FindBy(xpath = ".//ngb-columns//button")
-	private Button addColumns;
+    public int getNumRows() {
+        return gridPanel.getNumRows();
+    }
 
-	//	@FindBy(xpath =".//div[@class='jqx-grid jqx-reset jqx-rc-all jqx-widget jqx-widget-content jqx-disableselect']")
-	@FindBy(xpath =".//div[@role='grid']")
-	public GridPanel gridPanel;
+    public void clickCell(int r, int c) {
+        gridPanel.cell(r, c).click();
+    }
 
-	//	@FindBy(xpath = ".//div[@class = 'jqx-clear jqx-overflow-hidden jqx-position-absolute jqx-border-reset jqx-background-reset jqx-reset jqx-disableselect']")
-	@FindBy(css = ".ui-grid-contents-wrapper>.ui-grid-render-container-body")
-	public CustomTable variantsTable;
+    public String valueCell(int r, int c) {
+        return gridPanel.cell(r, c).getText();
+    }
 
-	public int getNumRows() {
-		return gridPanel.getNumRows();
-	}
 
-	public void clickCell(int r, int c) {
-		gridPanel.cell(r, c).click();
-	}
+    public void sortColumn(String ColName) {
+        gridPanel.sorting(ColName);
+    }
 
-	public String valueCell(int r, int c) {
-		return gridPanel.cell(r, c).getText();
-	}
 
-	@Step
-	public void sortColumn(String ColName) {
-		gridPanel.sorting(ColName);
-	}
+    private void visualizerVCF(int row) {
+        gridPanel.cell(row, 4).click(); // try popup info window
+        // sendKeys(Keys.ENTER);
+        VCFPanel.SelectGeneFile(); // select GRCh38.83.sorted.gtf
+        Timer.sleep(2000);
+        VCFPanel.WaitPict();
+        WebElement pWnd = getDriver().findElement(By.cssSelector(".md-transition-in"));
+        pWnd.sendKeys(Keys.ESCAPE);
+    }
 
-	@Step
-	public void visualizerVCF(int row) {
-		gridPanel.cell(row, 4).click(); // try popup info window
-		// sendKeys(Keys.ENTER);
-		VCFPanel.SelectGeneFile(2); // select GRCh38.83.sorted.gtf
-		Timer.sleep(2000);
-		VCFPanel.WaitPict();
-		WebElement pWnd = getDriver().findElement(By.cssSelector(".md-transition-in"));
-		pWnd.sendKeys(Keys.ESCAPE);
-	}
+    public void scanVCFPanels() {
+        int N = gridPanel.getNumRows();
+        int M = gridPanel.getNumCols();
+        String[] ss = new String[M];
+        for (int i = 0; i < N; i = i + M) {
+            gridPanel.cell(i, 2).click();
+            visualizerVCF(i);
+        }
+    }
 
-	public void scanVCFPanels() {
-		int N = gridPanel.getNumRows();
-		int M = gridPanel.getNumCols();
-		String[] ss = new String[M];
-		for (int i = 0; i < N; i = i + M) {
-			gridPanel.cell(i, 2).click();
-			visualizerVCF(i);
-		}
-	}
-	@Step
-	public void checkSetOfColumns(String...columns){
-		Assert.isTrue(compareTwoStringLists(gridPanel.columnsList.getTextList(), Arrays.asList(columns)), "Wrong set of columns");
-	}
+    public void checkSetOfColumns(String... columns) {
+        Assert.isTrue(compareTwoStringLists(gridPanel.columnsList.getTextList(), Arrays.asList(columns)), "Wrong set of columns");
+    }
 
-	@Step
-	public void checkVarQuality(String...rangeValues) {
-		SoftAssert soft_assert = new SoftAssert();
-		Assert.isFalse(variantsTable.tableRows.size() == 0, "There are no records in the 'Variants' table");
-		for (int i = 0; i < variantsTable.tableRows.size(); i++) {
-			variantsTable.tableRows.get(i).clickInSpeacialCell();
-			soft_assert.assertTrue(variationInfoWindow.isQualityWithinRange(rangeValues), "In "+(i+1)+" row is incorrect quality.");
-			variationInfoWindow.closeWindow();
-		}
-		soft_assert.assertAll();
-	}
 
-	@Step
-	public void checkVarGenes(String...genes) {
-		List<String> valuesFromTable;
-		List<String> expectedValues = Arrays.asList(genes);
-		List<Boolean> boolList = new ArrayList<>();
-		for (int i = 0; i < variantsTable.tableRows.size(); i++) {
-			valuesFromTable = Arrays.asList(variantsTable.tableRows.get(i).getRowValue(variantsTable.getColumnIndex("Gene")).replaceAll("\\s", "").split(","));
-			for (int j = 0; j < genes.length; j++) {
-				boolList.add(valuesFromTable.contains(genes[j]));
-			}
-			Assert.isTrue(boolList.contains(true), "There is no required gene among values from table: " + valuesFromTable.toString());
-			boolList.clear();
-		}
-	}
+    public void checkVarQuality(String... rangeValues) {
+        SoftAssert soft_assert = new SoftAssert();
+        Assert.isFalse(variantsTable.tableRows.isEmpty(), "There are no records in the 'Variants' table");
+        for (int i = 0; i < variantsTable.tableRows.size(); i++) {
+            variantsTable.tableRows.get(i).clickInSpeacialCell();
+            soft_assert.assertTrue(variationInfoWindow.isQualityWithinRange(rangeValues), "In " + (i + 1) + " row is incorrect quality.");
+            variationInfoWindow.closeWindow();
+        }
+        soft_assert.assertAll();
+    }
 
-	@Step
-	public void checkPictWithFile(String ProjectDir) {
-		try {
-			variantsTable.collectAllPictData(ProjectDir);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+
+    public void checkVarGenes(String... genes) {
+        List<String> valuesFromTable;
+        List<String> expectedValues = Arrays.asList(genes);
+        List<Boolean> boolList = new ArrayList<>();
+        for (int i = 0; i < variantsTable.tableRows.size(); i++) {
+            valuesFromTable = Arrays.asList(variantsTable.tableRows.get(i).getRowValue(variantsTable.getColumnIndex("Gene")).replaceAll("\\s", "").split(","));
+            for (String gene : genes) {
+                boolList.add(valuesFromTable.contains(gene));
+            }
+            Assert.isTrue(boolList.contains(true), "There is no required gene among values from table: " + valuesFromTable);
+            boolList.clear();
+        }
+    }
+
+
+    public void checkPictWithFile(String ProjectDir) {
+        try {
+            variantsTable.collectAllPictData(ProjectDir);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

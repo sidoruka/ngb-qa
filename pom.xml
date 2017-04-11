@@ -122,6 +122,10 @@
 			<properties>
 				<domain>http://ngb.opensource.epam.com/catgenome</domain>
 				<driver>chrome</driver>
+				<run.type>REMOTE</run.type>
+				<os>Windows 10</os>
+				<browser.version>57.0</browser.version>
+				<screen.resolution>1280x1024</screen.resolution>
 			</properties>
 		</profile>
 		<profile>
@@ -129,6 +133,10 @@
 			<properties>
 				<domain>http://ngb.opensource.epam.com/catgenome</domain>
 				<driver>firefox</driver>
+				<run.type>REMOTE</run.type>
+				<os>Windows 10</os>
+				<browser.version>52.0</browser.version>
+				<screen.resolution>1280x1024</screen.resolution>
 			</properties>
 		</profile>
 		<profile>
@@ -136,6 +144,10 @@
 			<properties>
 				<domain>http://ngb.opensource.epam.com/catgenome</domain>
 				<driver>ie</driver>
+				<run.type>REMOTE</run.type>
+				<os>Windows 10</os>
+				<browser.version>11.103</browser.version>
+				<screen.resolution>1280x1024</screen.resolution>
 			</properties>
 		</profile>
 		<profile>
@@ -143,6 +155,21 @@
 			<properties>
 				<domain>http://ngb.opensource.epam.com/catgenome</domain>
 				<driver>edge</driver>
+				<run.type>REMOTE</run.type>
+				<os>Windows 10</os>
+				<browser.version>14.14393</browser.version>
+				<screen.resolution>1280x1024</screen.resolution>
+			</properties>
+		</profile>
+		<profile>
+			<id>safari_opensource</id>
+			<properties>
+				<domain>http://ngb.opensource.epam.com/catgenome</domain>
+				<driver>safari</driver>
+				<run.type>REMOTE</run.type>
+				<os>macOS 10.12</os>
+				<browser.version>10.0</browser.version>
+				<screen.resolution>1280x1024</screen.resolution>
 			</properties>
 		</profile>
 	</profiles>

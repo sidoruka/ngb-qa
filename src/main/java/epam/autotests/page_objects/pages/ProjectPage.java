@@ -31,104 +31,95 @@ import static org.testng.Assert.assertEquals;
 
 /**
  * Created by Vsevolod_Adrianov on 7/8/2016.
- * 
- *<p/>
+ * <p>
+ * <p>
  * <b>Refactored</b> by Aksenov Oleg in September-October 2016
  */
 
 public class ProjectPage extends WebPage {
 
+    @FindBy(xpath = "//ngb-variants-table-panel")
+    public VariantsPanel variantsPanel;
+    //    @FindBy(xpath = "//ngb-filter-panel")
+    public FiltersPanel filterPanel;
+    @FindBy(xpath = "//ngb-browser")
+    public BrowserPanel browserPanel;
+    //    @FindBy(xpath = "//ul//li[@title='Bookmarks']//ancestor::div[@class='lm_header']/following-sibling::div//ngb-bookmarks-table")
+    @FindBy(xpath = "//ngb-bookmarks-table")
+    public SessionsPanel sessionsPanel;
+    @FindBy(xpath = "//div/md-menu-content//md-checkbox")
+    public CheckList<?> columns;
+    @FindBy(xpath = "//div/md-menu-content//md-checkbox")
+    public Elements<CheckBox> chbxColumns;
+    @FindBy(xpath = ".//md-dialog-actions/button[1]")
+    public Button popUpCANCELButton;
     @FindBy(xpath = ".//ngb-bookmark/md-menu/button")//.//ngb-tracks-view//ngb-bookmark/button")
     private Button sessionBtn;
-
     @FindBy(xpath = ".//md-menu-content/input")//.//ngb-tracks-view//ngb-bookmark/input")
     private TextField sessionTextField;
 
-    @FindBy(css = "[md-svg-icon='md-close']")
-    private Element chromosomeClose;
-
-    @FindBy(css = ".ngb-tool-menu md-menu-item")
-    private Elements<ViewsItemMenu> menuItem;
-
-    @FindBy(xpath = "//div[@class='lm_header']/ul/li/span")
-    private TextList<?> listTabs;
-    
-    @FindBy(xpath = "//div[@class='lm_header']/ul[@class='lm_tabs']/li")
-    private Elements<Element> panelsTabs;
-    
-    @FindBy(xpath = "//ngb-variants-table-panel")
-    public VariantsPanel variantsPanel;
-    
-//    @FindBy(xpath = "//ngb-filter-panel")
-    public FiltersPanel filterPanel;
-    
-	@FindBy(xpath = "//ngb-browser")
-	public BrowserPanel browserPanel;
-
 //	@FindBy(xpath = "//ngb-data-sets")
 //	public DatasetsPanel datasetsPanel;
-
-//	@FindBy(xpath = "//ngb-track-list")
-	@FindBy(xpath = "//ngb-track")
-    public TrackListPanel trackListPanel;
-    
-//    @FindBy(xpath = "//ul//li[@title='Bookmarks']//ancestor::div[@class='lm_header']/following-sibling::div//ngb-bookmarks-table")
-    @FindBy(xpath = "//ngb-bookmarks-table")
-    public SessionsPanel sessionsPanel;
-    
+    @FindBy(css = "[md-svg-icon='md-close']")
+    private Element chromosomeClose;
+    @FindBy(css = ".ngb-tool-menu md-menu-item")
+    private Elements<ViewsItemMenu> menuItem;
+    @FindBy(xpath = "//div[@class='lm_header']/ul/li/span")
+    private TextList<?> listTabs;
+    @FindBy(xpath = "//div[@class='lm_header']/ul[@class='lm_tabs']/li")
+    private Elements<Element> panelsTabs;
+    @FindBy(xpath = "//ngb-track")
+    private TrackListPanel trackListPanel;
     @FindBy(xpath = "//ngb-molecular-viewer")
-    public MolecularViewerPanel molViewerPanel;
-    
-    @FindBy(xpath = "//div/md-menu-content//md-checkbox")
-    public CheckList<?> columns;
-    
-    @FindBy(xpath = "//div/md-menu-content//md-checkbox")
-    public Elements<CheckBox> chbxColumns;
-
+    private MolecularViewerPanel molViewerPanel;
     @FindBy(xpath = "//ngb-close-all-tracks//ng-md-icon")
     private Element closeAllTracksButton;
-
     @FindBy(xpath = ".//md-dialog-actions/button[2]")
-    public Button popUpOKButton;
-
-    @FindBy(xpath = ".//md-dialog-actions/button[1]")
-    public Button popUpCANCELButton;
+    private Button popUpOKButton;
 
 //    @FindBy(xpath = ".//ngb-track//div[@class='ng-hide']")
 //    public Element loaderIndicator;
 
-    public void closeAllTracks(){
+    public void closeAllTracks() {
         if (closeAllTracksButton.isDisplayed()) {
             closeAllTracksButton.clickCenter();
             popUpOKButton.click();
             isInState(OPEN_DATASETS_PANEL);
-            assertEquals(true,mainPage.datasetsPanel.checkBoxIsSelected(),"dataset or file stil selected");
+            assertEquals(true, mainPage.datasetsPanel.checkBoxIsSelected(), "dataset or file stil selected");
         }
 
     }
-    
-    public Panel getPanel(Views panelName){
-    	switch (panelName) {
-			case BROWSER: return browserPanel;
-			case VARIANTS: return variantsPanel;
-			case FILTER: return filterPanel;
-			case TRACK_LIST: return trackListPanel;
-			case SESSIONS: return sessionsPanel;
-			case MOLECULAR_VIEWER: return molViewerPanel;
-			default: return null;
-		}
+
+    public Panel getPanel(Views panelName) {
+        switch (panelName) {
+            case BROWSER:
+                return browserPanel;
+            case VARIANTS:
+                return variantsPanel;
+            case FILTER:
+                return filterPanel;
+            case TRACK_LIST:
+                return trackListPanel;
+            case SESSIONS:
+                return sessionsPanel;
+            case MOLECULAR_VIEWER:
+                return molViewerPanel;
+            default:
+                return null;
+        }
     }
-    public void openFilter()	{
+
+    public void openFilter() {
         isInState(OPEN_VARIANTS_PANEL);
         filterPanel.openFilter();
     }
-
 
 
     public void setBookmark(String bkmrk) {
         sessionBtn.clickCenter();
         sessionTextField.sendKeys(bkmrk + Keys.ENTER);
     }
+
     public void addBookmark(String bookmarkName) {
         sessionBtn.click();
         Timer.sleep(1000);
@@ -154,7 +145,7 @@ public class ProjectPage extends WebPage {
 
     public void closePanel(String Item) {
         Timer.sleep(500);
-        if(menuItem.get(Item).isChecked()) {
+        if (menuItem.get(Item).isChecked()) {
             menuItem.get(Item).selectView();
         }
     }
@@ -217,16 +208,7 @@ public class ProjectPage extends WebPage {
     }
 */
     
-// вынести панель в отдельное окно
-    public void PopUp() {
-        // .lm_controls
-        // .lm_popout
-        //	this.getWebElement().findElement(By.cssSelector(".lm_controls")).click();
-//        lmPanels
-//        getWebElement().findElement(By.cssSelector(".lm_popout")).click();
-    }
-
-    /*
+/*
     public void SelectVisiblePanel(String Panel) {
         System.out.println(Panel);
         Panel.toUpperCase();
@@ -338,7 +320,8 @@ public class ProjectPage extends WebPage {
     public void onMainPage() {
         header.goToMainPage();
     }
-//
+
+    //
     /*public void scanDensityDiagram() {
 //??        Restore_Default_Layout();
 //        int N = DensityDiagram.getNumberChromosome();
@@ -411,13 +394,14 @@ public class ProjectPage extends WebPage {
     }
 //*/
     public void pressChromosome(int N) {
-        if(N<2) {
+        if (N < 2) {
             /*header.chromosomecontrol.get(N).click();
             WebElement inChr = header.chromosomecontrol.get(0).getDriver().findElement(By.cssSelector(".ng-pristine"));
             inChr.sendKeys("X");*/
         }
     }
-//
+
+    //
 /*??
     public void TestSortVCF() {
         gridPanel.VCFTableSort();
@@ -426,107 +410,109 @@ public class ProjectPage extends WebPage {
     public void sortingByCol(String ColName) {
         variantsPanel.sortColumn(ColName);
     }
-//
+
+    //
     public void chromosome() {
         System.out.println("        > Chromosome Diagram <");
 //        int N= DensityDiagram.getNumberChromosome();
-        int N=browserPanel.countsChromosomes();
-            for(int i=0; i<N; i++) {
+        int N = browserPanel.countsChromosomes();
+        for (int i = 0; i < N; i++) {
 //            System.out.println("Chromosome["+i+"]="+DensityDiagram.NameChromosome(i)+" weight="+DensityDiagram.getWeight(i));
-              System.out.println("Chromosome["+i+"]="+browserPanel.nameOfChromosome(i)+" weight="+browserPanel.weight(i));
+            System.out.println("Chromosome[" + i + "]=" + browserPanel.nameOfChromosome(i) + " weight=" + browserPanel.weight(i));
         }
         System.out.println("        > Variants types <");
-        int M=browserPanel.countsOfTypes();
-        for(int i=0; i<M; i++) {
-            System.out.println("Name of Type["+i+"]="+browserPanel.nameOfType(i)+" weight="+browserPanel.weightOfType(i));
+        int M = browserPanel.countsOfTypes();
+        for (int i = 0; i < M; i++) {
+            System.out.println("Name of Type[" + i + "]=" + browserPanel.nameOfType(i) + " weight=" + browserPanel.weightOfType(i));
         }
     }
 
 
-	public void checkDefaultView() {
-		SoftAssert soft_assert = new SoftAssert();
-		List<String> defaultPanelsSet = new ArrayList<String>(
-			    Arrays.asList(BROWSER.value.toUpperCase(), VARIANTS.value.toUpperCase(), TRACK_LIST.value.toUpperCase()));
-		soft_assert.assertTrue(header.checkView(this), "Some elements in Header are displayed or not displayed");
-		soft_assert.assertTrue(compareTwoStringLists(getNamesOfOpenedPanels(), defaultPanelsSet), "Set of default opened panels is not as expected");
-		soft_assert.assertAll();
-	}
+    public void checkDefaultView() {
+        SoftAssert soft_assert = new SoftAssert();
+        List<String> defaultPanelsSet = new ArrayList<>(
+                Arrays.asList(BROWSER.value.toUpperCase(), VARIANTS.value.toUpperCase(), TRACK_LIST.value.toUpperCase()));
+        soft_assert.assertTrue(header.checkView(this), "Some elements in Header are displayed or not displayed");
+        soft_assert.assertTrue(compareTwoStringLists(getNamesOfOpenedPanels(), defaultPanelsSet), "Set of default opened panels is not as expected");
+        soft_assert.assertAll();
+    }
 
-	private List<String> getNamesOfOpenedPanels() {
-		List<String> actualPanelsSet = new ArrayList<>();
-		for (int i = 0; i < listTabs.count(); i++) {
-			actualPanelsSet.add(listTabs.getText(i));
-		}
-		return actualPanelsSet;
-	}
-	
-	private Element getPanelTab(Views panelName){
-		String browser = "BROWSER";
-		if(browser.equals(panelName.value.toUpperCase())) {
-			for (Element panelTab : panelsTabs) {
-				String ss1 = panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim();
-				System.out.println("Tab name> <"+ss1+"> ["+panelName.value.toUpperCase()+"]");
-				if (panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim().equals(panelName.value))
-					return panelTab;
-			}
-			return null;
-		}
-			for (Element panelTab : panelsTabs) {
-				String ss1 = panelTab.get(By.xpath("./span")).getText();
-				System.out.println("Tab name> <"+ss1+"> ["+panelName.value.toUpperCase()+"]");
+    private List<String> getNamesOfOpenedPanels() {
+        List<String> actualPanelsSet = new ArrayList<>();
+        for (int i = 0; i < listTabs.count(); i++) {
+            actualPanelsSet.add(listTabs.getText(i));
+        }
+        return actualPanelsSet;
+    }
+
+    private Element getPanelTab(Views panelName) {
+        String browser = "BROWSER";
+        if (browser.equals(panelName.value.toUpperCase())) {
+            for (Element panelTab : panelsTabs) {
+                String ss1 = panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim();
+                System.out.println("Tab name> <" + ss1 + "> [" + panelName.value.toUpperCase() + "]");
+                if (panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim().equals(panelName.value)) {
+                    return panelTab;
+                }
+            }
+            return null;
+        }
+        for (Element panelTab : panelsTabs) {
+            String ss1 = panelTab.get(By.xpath("./span")).getText();
+            System.out.println("Tab name> <" + ss1 + "> [" + panelName.value.toUpperCase() + "]");
 //			String locator;
 //			if (panelTab.get(By.cssSelector(".lm_title")).getText().equals(panelName.value.toUpperCase()) || panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim().equals(panelName.value))
-				if (panelTab.get(By.xpath("./span")).getText().equals(panelName.value.toUpperCase()))
-					return panelTab;
-			}
-		return null;
-	}
-	
-	public boolean isPanelActive(Views panelName){
-		/*if(!getNamesOfOpenedPanels().contains(panelName.value.toUpperCase()))
+            if (panelTab.get(By.xpath("./span")).getText().equals(panelName.value.toUpperCase())) {
+                return panelTab;
+            }
+        }
+        return null;
+    }
+
+    public boolean isPanelActive(Views panelName) {
+        /*if(!getNamesOfOpenedPanels().contains(panelName.value.toUpperCase()))
 			return false;*/
-		Element tab = getPanelTab(panelName);
-		if(tab == null)
-			return false;
-		if(tab.getAttribute("class").contains("lm_active"))
-			return true;
-		return false;
-	}
+        Element tab = getPanelTab(panelName);
+        if (tab == null) {
+            return false;
+        }
+        return tab.getAttribute("class").contains("lm_active");
+    }
 
-	public void openPanel(Views panelName) {
-		if(!getNamesOfOpenedPanels().contains(panelName.value.toUpperCase())){
-			header.selectView(panelName);
-		} else if(!isPanelActive(panelName)){
-			getPanelTab(panelName).clickCenter();
-		}
-	}
+    public void openPanel(Views panelName) {
+        if (!getNamesOfOpenedPanels().contains(panelName.value.toUpperCase())) {
+            header.selectView(panelName);
+        } else if (!isPanelActive(panelName)) {
+            getPanelTab(panelName).clickCenter();
+        }
+    }
 
-	public void checkViewingTrackList() {
+    public void checkViewingTrackList() {
 //		parametersChlst
 //		Assert.isTrue(browserPanel.getCountOfOpenedTracks() == trackListPanel.getCountOfSelectedFilters(),
-		Assert.isTrue(browserPanel.getCountOfOpenedTracks()-2 == filterPanel.getSizeActiveVCFFile(),
-				"Number of displayed track and number of selected filters is not the same");
+        Assert.isTrue(browserPanel.getCountOfOpenedTracks() - 2 == filterPanel.getSizeActiveVCFFile(),
+                "Number of displayed track and number of selected filters is not the same");
 //		Assert.isTrue(compareTwoStringLists(browserPanel.getTracksTitle(), trackListPanel.getListOfSelectedFilters()), "Displayed tracks and selected filters don't correspond with each other.");
-		Assert.isTrue(compareTwoStringLists(browserPanel.getTracksTitle("VCF"), filterPanel.getListOfSelectedFilters()), "Displayed tracks and selected filters don't correspond with each other.");
-	}
+        Assert.isTrue(compareTwoStringLists(browserPanel.getTracksTitle("VCF"), filterPanel.getListOfSelectedFilters()), "Displayed tracks and selected filters don't correspond with each other.");
+    }
 
-	public void checkLastTrack(String trackTitle) {
-		List<String> tracksList = browserPanel.getTracksTitle("VCF");
-		Assert.isTrue(tracksList.get(tracksList.size()-1).equals(trackTitle), "Wrong last track");
-	}
+    public void checkLastTrack(String trackTitle) {
+        List<String> tracksList = browserPanel.getTracksTitle("VCF");
+        Assert.isTrue(tracksList.get(tracksList.size() - 1).equals(trackTitle), "Wrong last track");
+    }
 
-	public void checkingViewOfBookmarksAndBrowser(String bookmarkName, String chromosome) {
-		SoftAssert soft_assert = new SoftAssert();
-		
-		String[] bmParams = sessionsPanel.bookmarksTable.findRow("Name", bookmarkName).collectRowData2(1, 2, 3);
-		String[] tabParams = new String[3];
-		tabParams[0] = browserPanel.getTabTitle().replaceAll("(CHR:)|(\\n\\d+)","");
-		tabParams[1] = browserPanel.CoordMenu().getText().replaceAll("(\\w+:\\s)|(\\s-\\s\\d+)", "");
-		tabParams[2] = browserPanel.CoordMenu().getText().replaceAll("\\d+\\:\\s\\d+\\s-\\s", "");
-		
-		soft_assert.assertTrue(bmParams[0].equals(tabParams[0]), "Wrong chromosome");
-		soft_assert.assertTrue(bmParams[1].equals(tabParams[1]), "Wrong left coordinate");
-		soft_assert.assertTrue(bmParams[2].equals(tabParams[2]), "Wrong right coordinate");
-		soft_assert.assertAll();
-	}
+    public void checkingViewOfBookmarksAndBrowser(String bookmarkName) {
+        SoftAssert soft_assert = new SoftAssert();
+
+        String[] bmParams = sessionsPanel.bookmarksTable.findRow(bookmarkName).collectRowData2(1, 2, 3);
+        String[] tabParams = new String[3];
+        tabParams[0] = browserPanel.getTabTitle().replaceAll("(CHR:)|(\\n\\d+)", "");
+        tabParams[1] = browserPanel.CoordMenu().getText().replaceAll("(\\w+:\\s)|(\\s-\\s\\d+)", "");
+        tabParams[2] = browserPanel.CoordMenu().getText().replaceAll("\\d+\\:\\s\\d+\\s-\\s", "");
+
+        soft_assert.assertTrue(bmParams[0].equals(tabParams[0]), "Wrong chromosome");
+        soft_assert.assertTrue(bmParams[1].equals(tabParams[1]), "Wrong left coordinate");
+        soft_assert.assertTrue(bmParams[2].equals(tabParams[2]), "Wrong right coordinate");
+        soft_assert.assertAll();
+    }
 }

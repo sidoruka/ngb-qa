@@ -1,28 +1,23 @@
 package epam.autotests.page_objects.panels;
 
-import com.epam.commons.Timer;
 import com.epam.jdi.uitests.web.selenium.elements.base.Element;
 import com.epam.jdi.uitests.web.selenium.elements.common.Button;
 import com.epam.jdi.uitests.web.selenium.elements.common.Label;
 import com.epam.jdi.uitests.web.selenium.elements.common.Link;
-import com.epam.jdi.uitests.web.selenium.elements.common.TextField;
 import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 import com.epam.web.matcher.junit.Assert;
-
 import epam.autotests.page_objects.general.HistogramElement;
 import epam.autotests.page_objects.general.Panel;
 import epam.autotests.page_objects.general.Track;
 import epam.autotests.page_objects.sections.VariantDensity;
 import epam.autotests.page_objects.sections.VariantsType;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
+import org.testng.asserts.SoftAssert;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.FindBy;
-import org.testng.asserts.SoftAssert;
 
 
 /**
@@ -66,7 +61,6 @@ public class BrowserPanel extends Panel {
 
     @FindBy(xpath = ".//ngb-tracks-view//section/button//span[text()='-']/parent::button")
     private Button zoomOut;
-
 
 
 //    @FindBy(xpath = ".//ngb-bookmark/md-menu/button")//.//ngb-tracks-view//ngb-bookmark/button")
@@ -126,9 +120,11 @@ public class BrowserPanel extends Panel {
     }
 
     public boolean isIn(String Position) {
-        String dd = this.getDriver().findElement(By.cssSelector(".lm_tab ngb-coordinates")).getText();
+        String dd = getDriver().findElement(By.cssSelector(".lm_tab ngb-coordinates")).getText();
         int i = dd.lastIndexOf(':');
-        long d1, d2, p;
+        long d1;
+        long d2;
+        long p;
         String Chromosome = dd.substring(0, i);
         String s0 = dd.substring(i + 1, dd.length());
         i = s0.lastIndexOf('-');
@@ -146,10 +142,7 @@ public class BrowserPanel extends Panel {
         System.out.println("      long  [" + d1 + "..." + d2 + "]");
         Boolean result;
 
-        if ((d1 < p) && (p < d2))
-            result = true;
-        else
-            result = false;
+        result = d1 < p && p < d2;
         System.out.println("  result is(" + result + ")");
 
         return result;
@@ -208,15 +201,16 @@ public class BrowserPanel extends Panel {
     }
 
     public String getTabTitle() {
-        String sTitle = this.get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//div")).getText();
-        if (!sTitle.equals("BROWSER"))
+        String sTitle = get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//div")).getText();
+        if (!"BROWSER".equals(sTitle)) {
             sTitle = sTitle.replaceAll(":\\s\\d+\\s-\\s\\d+", "");
+        }
 
         return sTitle;
     }
 
     public String getCoordinates() {
-        String coords = this.get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//a")).getText();
+        String coords = get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//a")).getText();
         coords = coords.replaceAll("\\w+:\\s", "");
         return coords;
     }
@@ -227,8 +221,8 @@ public class BrowserPanel extends Panel {
         }
     }
 
-    public void decreaseZoom(int times) {
-        for (int i = 0; i < times; i++) {
+    public void decreaseZoom() {
+        for (int i = 0; i < 3; i++) {
             zoomIn.clickCenter();
         }
     }
@@ -247,7 +241,7 @@ public class BrowserPanel extends Panel {
 //    }
 
     public void checkDefaultView() {
-        Assert.isTrue(getTabTitle().equals("BROWSER"));
+        Assert.isTrue("BROWSER".equals(getTabTitle()));
 
         SoftAssert soft_assert = new SoftAssert();
         for (Section section : attachedToProject) {
@@ -260,8 +254,9 @@ public class BrowserPanel extends Panel {
 
     private Element getHistogramElement(String name) {
         for (int i = 0; i < variationHistogramElements.size(); i++) {
-            if (variationHistogramElements.get(i).get(By.xpath("./parent::*[local-name()='g']/parent::*[local-name()='g']/*[local-name()='text'][" + (i + 1) + "]")).getText().equals(name))
+            if (variationHistogramElements.get(i).get(By.xpath("./parent::*[local-name()='g']/parent::*[local-name()='g']/*[local-name()='text'][" + (i + 1) + "]")).getText().equals(name)) {
                 return variationHistogramElements.get(i);
+            }
         }
         return null;
     }
@@ -285,17 +280,13 @@ public class BrowserPanel extends Panel {
 
     public List<String> checkTrackMenuItem() {
         List<String> trackMenuState = new ArrayList<>();
-        int i =0;
-        while (i!=-1)
-        {
-            try
-            {
+        int i = 0;
+        while (i != -1) {
+            try {
                 trackMenuState.add(menuItems.get(i).getText());
                 i++;
-            }
-            catch (Exception e)
-            {
-                i=-1;
+            } catch (Exception e) {
+                i = -1;
             }
 
         }
@@ -303,26 +294,31 @@ public class BrowserPanel extends Panel {
     }
 
     public void selectTrackMenuItem(String svtype, String TrackMenuName, String menuItem) {
-        String trackMenuNameCasted=TrackMenuName;
-        switch (svtype){
+        String trackMenuNameCasted = TrackMenuName;
+        switch (svtype) {
             case "BAM":
-                switch (TrackMenuName){
-                    case "Color mode": trackMenuNameCasted=menuItems.get(0).getText();
+                switch (TrackMenuName) {
+                    case "Color mode":
+                        trackMenuNameCasted = menuItems.get(0).getText();
                         break;
-                    case "Group": trackMenuNameCasted=menuItems.get(1).getText();
+                    case "Group":
+                        trackMenuNameCasted = menuItems.get(1).getText();
                         break;
-                    case "Reads view": trackMenuNameCasted=menuItems.get(2).getText();
+                    case "Reads view":
+                        trackMenuNameCasted = menuItems.get(2).getText();
                         break;
                 }
                 break;
             case "GENE":
                 switch (TrackMenuName) {
-                    case "Transcript view": trackMenuNameCasted=menuItems.get(0).getText();
+                    case "Transcript view":
+                        trackMenuNameCasted = menuItems.get(0).getText();
                         break;
                 }
             case "VCF":
                 switch (TrackMenuName) {
-                    case "Variants view": trackMenuNameCasted=menuItems.get(0).getText();
+                    case "Variants view":
+                        trackMenuNameCasted = menuItems.get(0).getText();
                         break;
                 }
         }

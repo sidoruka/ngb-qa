@@ -4,36 +4,37 @@ import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 import org.openqa.selenium.support.FindBy;
 
-public class Tree extends Section{
+public class Tree extends Section {
 
-    @FindBy (css = ".dataset-item-row")
+    @FindBy(css = ".dataset-item-row")
     private Elements<Node> dataset;
 
-    public int Nodes() {
+    private int Nodes() {
         return dataset.size();
     }
 
     public Node getBy(String name) {
-        for(int i=0; i<Nodes(); i++)
-            if(dataset.get(i).getToggleLabel().getText().contains(name))
-                return dataset.get(i);
+        for (int i = 0; i < Nodes(); i++) {
+            if (dataset.get(i).getToggleLabel().getText().contains(name)) {
+                return this.dataset.get(i);
+            }
+        }
 //            else
         return null;
     }
 
     public boolean isSelected() {
-        boolean isSelect=false;
+        boolean isSelect = false;
         try {
-        for (int i = 0; i < Nodes(); i++) {
-                if (dataset.get(i).cBox.isDisplayed()&&dataset.get(i).cBox.isChecked()) {
+            for (int i = 0; i < Nodes(); i++) {
+                if (dataset.get(i).cBox.isDisplayed() && dataset.get(i).cBox.isChecked()) {
                     isSelect = false;
                     break;
-                } else
+                } else {
                     isSelect = true;
+                }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
         return isSelect;

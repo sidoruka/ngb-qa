@@ -11,19 +11,20 @@ import java.util.List;
  * Created by Vsevolod_Adrianov on 7/18/2016.
  */
 public class PropertyVCF extends Section {
-// .md-variant-properties-table
-    @FindBy(css=".md-variant-property-single-value") //
+    // .md-variant-properties-table
+    @FindBy(css = ".md-variant-property-single-value") //
     private List<Element> pValue;
 
-    @FindBy(css="md-radio-button")
+    @FindBy(css = "md-radio-button")
     private RadioButtons listGeneFiles;
 
-    @FindBy(css="canvas")
+    @FindBy(css = "canvas")
     private Element pict;
-//
-    public PropertyVCF() {}
-//
-    public void SelectGeneFile(int ix) { listGeneFiles.select(ix); }
+
+    //
+    public void SelectGeneFile() {
+        listGeneFiles.select(2);
+    }
 
     public boolean IsLoadedProperties() {
         return pValue.isEmpty();
