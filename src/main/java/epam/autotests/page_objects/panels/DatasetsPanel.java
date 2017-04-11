@@ -19,7 +19,7 @@ public class DatasetsPanel extends Panel {
     @FindBy(xpath = ".//md-input-container/input")
     private TextField searchTextField;
 
-    @FindBy(xpath = ".//md-virtual-repeat-container") //.md-virtual-repeat-offsetter") //done
+    @FindBy(xpath = ".//md-virtual-repeat-container")
     private Tree dsTree;
 
     @FindBy(xpath = ".//md-virtual-repeat-container//input")

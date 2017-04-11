@@ -63,12 +63,6 @@ public class BrowserPanel extends Panel {
     private Button zoomOut;
 
 
-//    @FindBy(xpath = ".//ngb-bookmark/md-menu/button")//.//ngb-tracks-view//ngb-bookmark/button")
-//    private Button sessionBtn;
-//
-//    @FindBy(xpath = "//*[@id=\"menu_container_4\"]/md-menu-content/input")//.//ngb-tracks-view//ngb-bookmark/input")
-//    private TextField sessionTextField;
-
     @FindBy(xpath = ".//ngb-tracks-view//button[@aria-label='save screenshot']") //screenshot
     private Button makeScreenshotBtn;
 
@@ -86,10 +80,6 @@ public class BrowserPanel extends Panel {
     //  @FindBy(css = ".md-active md-menu-content[role='menu'] md-menu-item .md-label span:not(.info-hotkey)")
     @FindBy(xpath = ".//ancestor::body//*[contains(@class,'md-active')]//md-menu-item//*[contains(@class,'track-menu-button') or contains(@class,'md-label')]/span[1]")
     private Elements<Button> menuSubitems;
-
-    //    @FindBy(css=".coordinates-menu-item")
-//    private Elements<Button> popUpMenu;
-
 
     public int weight(int index) {
         return densityDiagram.getWeight(index);
@@ -120,11 +110,9 @@ public class BrowserPanel extends Panel {
     }
 
     public boolean isIn(String Position) {
-        String dd = getDriver().findElement(By.cssSelector(".lm_tab ngb-coordinates")).getText();
+        String dd = this.getDriver().findElement(By.cssSelector(".lm_tab ngb-coordinates")).getText();
         int i = dd.lastIndexOf(':');
-        long d1;
-        long d2;
-        long p;
+        long d1, d2, p;
         String Chromosome = dd.substring(0, i);
         String s0 = dd.substring(i + 1, dd.length());
         i = s0.lastIndexOf('-');
@@ -142,7 +130,10 @@ public class BrowserPanel extends Panel {
         System.out.println("      long  [" + d1 + "..." + d2 + "]");
         Boolean result;
 
-        result = d1 < p && p < d2;
+        if ((d1 < p) && (p < d2))
+            result = true;
+        else
+            result = false;
         System.out.println("  result is(" + result + ")");
 
         return result;
@@ -161,11 +152,6 @@ public class BrowserPanel extends Panel {
             }
         }
     }
-
-//    public void setBookmark(String bkmrk) {
-//        sessionBtn.clickCenter();
-//        sessionTextField.sendKeys(bkmrk + Keys.ENTER);
-//    }
 
     public int getCountOfOpenedTracks() {
         return tracks.size();
@@ -201,16 +187,15 @@ public class BrowserPanel extends Panel {
     }
 
     public String getTabTitle() {
-        String sTitle = get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//div")).getText();
-        if (!"BROWSER".equals(sTitle)) {
+        String sTitle = this.get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//div")).getText();
+        if (!sTitle.equals("BROWSER"))
             sTitle = sTitle.replaceAll(":\\s\\d+\\s-\\s\\d+", "");
-        }
 
         return sTitle;
     }
 
     public String getCoordinates() {
-        String coords = get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//a")).getText();
+        String coords = this.get(By.xpath(".//ancestor::div[@class = 'lm_items']/preceding-sibling::div[@class='lm_header']//li[@title='Browser']//a")).getText();
         coords = coords.replaceAll("\\w+:\\s", "");
         return coords;
     }
@@ -221,27 +206,16 @@ public class BrowserPanel extends Panel {
         }
     }
 
-    public void decreaseZoom() {
-        for (int i = 0; i < 3; i++) {
+    public void decreaseZoom(int times) {
+        for (int i = 0; i < times; i++) {
             zoomIn.clickCenter();
         }
     }
 
-//    public void addBookmark(String bookmarkName) {
-//        sessionBtn.click();
-//        //sessionBtn.clickCenter();
-//        Timer.sleep(1000);
-//        sessionTextField.sendKeys(bookmarkName + Keys.ENTER);
-//        Timer.sleep(1000);
-//    }
-//
-//    public void checkViewAfterAddition() {
-//        Assert.isTrue(sessionBtn.get(By.xpath(".//*[local-name()='svg']")).getAttribute("style").equals("fill: green;"), "Bookmark sign isn't green");
-//        Assert.isFalse(sessionTextField.isDisplayed(), "Text field for bookmark's name is still displayed");
-//    }
+
 
     public void checkDefaultView() {
-        Assert.isTrue("BROWSER".equals(getTabTitle()));
+        Assert.isTrue(getTabTitle().equals("BROWSER"));
 
         SoftAssert soft_assert = new SoftAssert();
         for (Section section : attachedToProject) {
@@ -254,9 +228,8 @@ public class BrowserPanel extends Panel {
 
     private Element getHistogramElement(String name) {
         for (int i = 0; i < variationHistogramElements.size(); i++) {
-            if (variationHistogramElements.get(i).get(By.xpath("./parent::*[local-name()='g']/parent::*[local-name()='g']/*[local-name()='text'][" + (i + 1) + "]")).getText().equals(name)) {
+            if (variationHistogramElements.get(i).get(By.xpath("./parent::*[local-name()='g']/parent::*[local-name()='g']/*[local-name()='text'][" + (i + 1) + "]")).getText().equals(name))
                 return variationHistogramElements.get(i);
-            }
         }
         return null;
     }
@@ -272,7 +245,6 @@ public class BrowserPanel extends Panel {
 
     public void checkOpenedChromosome(String name) {
         SoftAssert soft_assert = new SoftAssert();
-//		soft_assert.assertTrue(header.getSearchFieldText().equals(name));
         soft_assert.assertTrue(getTabTitle().equals(name));
 
         soft_assert.assertAll();

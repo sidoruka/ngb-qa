@@ -27,14 +27,17 @@ import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
  */
 
 public class VariantsPanel extends Panel {
-    @FindBy(css = ".ui-grid-contents-wrapper>.ui-grid-render-container-body")
-    public CustomTable variantsTable;
     @FindBy(css = ".md-transition-in")
     private PropertyVCF VCFPanel;
+
     @FindBy(xpath = ".//ngb-columns//button")
     private Button addColumns;
+
     @FindBy(xpath = ".//div[@role='grid']")
-    private GridPanel gridPanel;
+    public GridPanel gridPanel;
+
+    @FindBy(css = ".ui-grid-contents-wrapper>.ui-grid-render-container-body")
+    public CustomTable variantsTable;
 
     public int getNumRows() {
         return gridPanel.getNumRows();
@@ -48,16 +51,14 @@ public class VariantsPanel extends Panel {
         return gridPanel.cell(r, c).getText();
     }
 
-
     public void sortColumn(String ColName) {
         gridPanel.sorting(ColName);
     }
 
 
-    private void visualizerVCF(int row) {
-        gridPanel.cell(row, 4).click(); // try popup info window
-        // sendKeys(Keys.ENTER);
-        VCFPanel.SelectGeneFile(); // select GRCh38.83.sorted.gtf
+    public void visualizerVCF(int row) {
+        gridPanel.cell(row, 4).click();
+        VCFPanel.SelectGeneFile(2);
         Timer.sleep(2000);
         VCFPanel.WaitPict();
         WebElement pWnd = getDriver().findElement(By.cssSelector(".md-transition-in"));
@@ -81,7 +82,7 @@ public class VariantsPanel extends Panel {
 
     public void checkVarQuality(String... rangeValues) {
         SoftAssert soft_assert = new SoftAssert();
-        Assert.isFalse(variantsTable.tableRows.isEmpty(), "There are no records in the 'Variants' table");
+        Assert.isFalse(variantsTable.tableRows.size() == 0, "There are no records in the 'Variants' table");
         for (int i = 0; i < variantsTable.tableRows.size(); i++) {
             variantsTable.tableRows.get(i).clickInSpeacialCell();
             soft_assert.assertTrue(variationInfoWindow.isQualityWithinRange(rangeValues), "In " + (i + 1) + " row is incorrect quality.");
@@ -97,14 +98,13 @@ public class VariantsPanel extends Panel {
         List<Boolean> boolList = new ArrayList<>();
         for (int i = 0; i < variantsTable.tableRows.size(); i++) {
             valuesFromTable = Arrays.asList(variantsTable.tableRows.get(i).getRowValue(variantsTable.getColumnIndex("Gene")).replaceAll("\\s", "").split(","));
-            for (String gene : genes) {
-                boolList.add(valuesFromTable.contains(gene));
+            for (int j = 0; j < genes.length; j++) {
+                boolList.add(valuesFromTable.contains(genes[j]));
             }
-            Assert.isTrue(boolList.contains(true), "There is no required gene among values from table: " + valuesFromTable);
+            Assert.isTrue(boolList.contains(true), "There is no required gene among values from table: " + valuesFromTable.toString());
             boolList.clear();
         }
     }
-
 
     public void checkPictWithFile(String ProjectDir) {
         try {

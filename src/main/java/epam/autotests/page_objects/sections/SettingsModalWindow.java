@@ -20,7 +20,6 @@ public class SettingsModalWindow extends Section {
     @FindBy(xpath = ".//md-tab-item")
     private Tabs<SettingTabs> settingTabs;
 
-    //	@FindBy(xpath = ".//button[@aria-label='Save']")
     @FindBy(xpath = ".//button[@ng-click='ctrl.save()']")
     private Button saveBtn;
 
@@ -57,16 +56,14 @@ public class SettingsModalWindow extends Section {
 
     public void checkDownsample() {
         Boolean check = Downsample.getAttribute("class").contains("md-checked");
-        if (!check) {
+        if (!check)
             Downsample.clickCenter();
-        }
     }
 
     public void uncheckDownsample() {
         Boolean check = Downsample.getAttribute("class").contains("md-checked");
-        if (check) {
+        if (check)
             Downsample.clickCenter();
-        }
     }
 
     public void changeMaximumRange(String rangeValue) {

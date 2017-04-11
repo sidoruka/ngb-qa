@@ -13,15 +13,15 @@ public class Track extends Section {
     @FindBy(xpath = ".//div[contains(@class, 'ngb-track-header-file-name')]")
     private Label trackTitle;
 
-    private String getTrackType() {
+    public String getTrackType() {
         return trackType.getText();
     }
 
-    private String getTrackTitle() {
+    public String getTrackTitle() {
         return trackTitle.getText();
     }
 
     public String getTrackAllText() {
-        return getTrackType() + " " + getTrackTitle();
+        return getTrackType().concat(" ").concat(getTrackTitle());
     }
 }

@@ -31,11 +31,11 @@ public class CheckingSessionsPanelTest extends TestBase {
     @Test(priority = 0)
     public void TestBookmarkCreation() {
         isInState(CHROMOSOME_CHOSEN);
-        projectPage.browserPanel.decreaseZoom();
+        projectPage.browserPanel.decreaseZoom(3);
         projectPage.addBookmark(bookmark1);
         projectPage.checkViewAfterAddition();
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
-        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1);
+        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "2");
         System.out.println("=== CheckingSessionsPanelTest.TestBookmarkCreation(); @Test(priority=0)");
     }
 
@@ -46,7 +46,7 @@ public class CheckingSessionsPanelTest extends TestBase {
         projectPage.closeAllTracks();
         isInState(OPEN_SESSIONS_PANEL);
         projectPage.sessionsPanel.chooseBookmark(bookmark1);
-        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1);
+        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "2");
         projectPage.sessionsPanel.deleteBookmarkWithoutConfirmation(bookmark1);
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
         projectPage.sessionsPanel.deleteBookmarks(bookmark1);

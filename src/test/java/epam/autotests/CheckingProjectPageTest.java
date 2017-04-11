@@ -2,6 +2,7 @@ package epam.autotests;
 
 import com.epam.commons.Timer;
 import com.epam.web.matcher.testng.Assert;
+import epam.autotests.page_objects.enums.VarTableColumns;
 import epam.autotests.page_objects.sections.VariationInfoModalWindow;
 import epam.autotests.utils.TestBase;
 import org.testng.annotations.AfterClass;
@@ -53,10 +54,10 @@ public class CheckingProjectPageTest extends TestBase {
         projectPage.variantsPanel.variantsTable.setSorting(POSITION, DESC);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(POSITION, true, false));
 
-        projectPage.variantsPanel.variantsTable.setSorting(GENE, ASC);
-        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(GENE, false, true));
-        projectPage.variantsPanel.variantsTable.setSorting(GENE, DESC);
-        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(GENE, false, false));
+        projectPage.variantsPanel.variantsTable.setSorting(VarTableColumns.GENE, ASC);
+        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(VarTableColumns.GENE, false, true));
+        projectPage.variantsPanel.variantsTable.setSorting(VarTableColumns.GENE, DESC);
+        Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(VarTableColumns.GENE, false, false));
 
         projectPage.variantsPanel.variantsTable.setSorting(CHR, ASC);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(CHR, false, true));
@@ -74,5 +75,6 @@ public class CheckingProjectPageTest extends TestBase {
         Timer.sleep(1000);
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingProjectPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
+        ;
     }
 }

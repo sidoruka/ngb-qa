@@ -29,7 +29,7 @@ public class CheckingMainPageTest extends TestBase {
             Timer.sleep(5000);
             settingWindow.close();
         }
-        System.out.println("=== CheckingMainPageTest.checkingDataPresence_Tiles(); @Test(priority=0)");
+        System.out.println("=== CheckingMainPageTest.checkingDataPresence(); @Test(priority=0)");
     }
 
     @AfterClass(alwaysRun = true)

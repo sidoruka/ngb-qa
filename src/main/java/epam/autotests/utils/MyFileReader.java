@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class MyFileReader {
+public class MyFileReader {
 
     public static File loadExternalFile(String fileName) {
         return new File(new File("").getAbsolutePath() + "/" + fileName);
@@ -22,10 +22,10 @@ class MyFileReader {
             while ((line = br.readLine()) != null) {
                 lineItems = line.split(cvsSplitBy);
                 if (firstRowFlag) {
-                    indexes = MyFileReader.getColumnsIndex(lineItems, requiredColumns);
+                    indexes = getColumnsIndex(lineItems, requiredColumns);
                     firstRowFlag = false;
                 } else {
-                    result.add(MyFileReader.collectValues(indexes, lineItems));
+                    result.add(collectValues(indexes, lineItems));
                 }
             }
             br.close();
@@ -49,9 +49,9 @@ class MyFileReader {
     private static int[] getColumnsIndex(String[] lineFromFile, String... columnsName) {
         int[] indexes = new int[columnsName.length];
         int counter = 0;
-        for (String aColumnsName : columnsName) {
+        for (int i = 0; i < columnsName.length; i++) {
             for (int j = 0; j < lineFromFile.length; j++) {
-                if (aColumnsName.equals(lineFromFile[j])) {
+                if (columnsName[i].equals(lineFromFile[j])) {
                     indexes[counter] = j;
                     counter++;
                     break;
@@ -62,7 +62,8 @@ class MyFileReader {
     }
 
     public static int countLines(File file) throws IOException {
-        try (InputStream is = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()))) {
+        InputStream is = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
+        try {
             byte[] c = new byte[1024];
             int count = 0;
             int readChars = 0;
@@ -75,7 +76,9 @@ class MyFileReader {
                     }
                 }
             }
-            return count == 0 && !empty ? 1 : count;
+            return (count == 0 && !empty) ? 1 : count;
+        } finally {
+            is.close();
         }
     }
 }

@@ -30,13 +30,11 @@ public class Header extends Section {
     @FindBy(xpath = ".//ngb-version/h3")
     private Label appVersion;
 
-
     @FindBy(css = ".md-title.page-title.hide.show-gt-sm")
     private Label pageTitle;
 
-
     @FindBy(css = "h3.md-title.project-title")
-    private Label projectTitle;
+    public Label projectTitle;
 
     @FindBy(xpath = ".//ngb-search//input")
     private TextField searchInput;
@@ -47,6 +45,7 @@ public class Header extends Section {
 
     @FindBy(css = "md-input-container .md-input[aria-label='chromosome input']")
     private TextField chromosomeChooser;
+
 
     @FindBy(css = ".coordinates-menu-item")
     private Menu<?> chromosomeMenu;
@@ -82,16 +81,16 @@ public class Header extends Section {
         return searchInput.getText();
     }
 
-    private boolean isAppTitlePresent() {
+    public boolean isAppTitlePresent() {
         return appTitle.isDisplayed();
     }
 
-    private String getAppVersion() {
+    public String getAppVersion() {
         return appVersion.getText();
     }
 
     public String getVersion() {
-        Timer.waitCondition(this::isAppTitlePresent);
+        Timer.waitCondition(() -> isAppTitlePresent());
         System.out.println("getVersion(" + getAppVersion() + ");");
         return getAppVersion();
     }
@@ -102,15 +101,19 @@ public class Header extends Section {
         checkList.add(appVersion.isDisplayed());
         checkList.add(pageTitle.isDisplayed());
         switch (page.getClass().getSimpleName()) {
-            case "MainPage":
+            case "MainPage": {
                 checkList.add(searchInput.isDisplayed());
+                // checkList.add(() -> {return projectTitle.isDisplayed() ?
+                // false : true});
                 break;
-            case "ProjectPage":
+            }
+            case "ProjectPage": {
                 checkList.add(projectTitle.isDisplayed());
                 checkList.add(searchBtn.isDisplayed());
                 checkList.add(menuViewsBtn.isDisplayed());
                 checkList.add(settingBtn.isDisplayed());
                 break;
+            }
             default:
                 throw new IllegalArgumentException("Wrong class was transmitted");
         }
@@ -123,9 +126,8 @@ public class Header extends Section {
 
     private Element getViewMenuItem(Views viewsName) {
         for (Element menuItem : viewsMenuItems) {
-            if (menuItem.get(By.xpath(".//span")).getText().equals(viewsName.value)) {
+            if (menuItem.get(By.xpath(".//span")).getText().equals(viewsName.value))
                 return menuItem;
-            }
         }
         return null;
     }
@@ -162,14 +164,15 @@ public class Header extends Section {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
+            return;
         }
     }
 
-    public void chooseChromosome() {
+    public void chooseChromosome(String chr) {
         projectPage.browserPanel.ChrMenu().click();
-        chromosomeChooser.sendKeys("2");
+        chromosomeChooser.sendKeys(chr);
 //		chromosomeChooser.sendKeys(Keys.LEFT_CONTROL+"a" + string); i don't know what this row do
-        chromosomeMenu.select("2");
+        chromosomeMenu.select(chr);
     }
 
     public void chooseCoordinates(String string) {
@@ -180,7 +183,7 @@ public class Header extends Section {
 
 
     public boolean isChromosomeSelected() {
-        return !"NONE".equals(projectPage.browserPanel.getChrTitle());
+        return !projectPage.browserPanel.getChrTitle().equals("NONE");
     }
 
     public void resetChSelection() {

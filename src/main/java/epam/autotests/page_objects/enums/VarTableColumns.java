@@ -9,7 +9,7 @@ public enum VarTableColumns {
 
     public final String value;
 
-    VarTableColumns(String value) {
+    VarTableColumns(final String value) {
         this.value = value;
     }
 }

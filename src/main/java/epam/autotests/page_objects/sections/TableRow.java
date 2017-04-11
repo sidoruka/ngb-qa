@@ -1,6 +1,5 @@
 package epam.autotests.page_objects.sections;
 
-import com.epam.commons.Timer;
 import com.epam.jdi.uitests.web.selenium.elements.base.Element;
 import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
 import com.epam.jdi.uitests.web.selenium.elements.complex.TextList;
@@ -15,20 +14,24 @@ import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
 
 public class TableRow extends Section {
 
-
-    public static String variationName;
+    //	@FindBy(xpath = ".//div[@role='gridcell']//descendant::*[not(text()='')]")
     @FindBy(css = "[role='gridcell']")
     private TextList<?> rowValues;
-    @FindBy(css = "[role='gridcell']")
 
+    //	@FindBy(xpath = ".//div[@role='gridcell']")
+    @FindBy(css = "[role='gridcell']")
+//	@FindBy(css = "div .ui-grid-row")
     private Elements<Element> rowCells;
 
+
     public String getRowValue(int columnIndex) {
-        return this.rowValues.getTextList().get(columnIndex);
+        return rowValues.getTextList().get(columnIndex);
     }
 
+    public static String variationName;
+
     public boolean isRowContainsValue(String requiredValue) {
-        return this.rowValues.getTextList().contains(requiredValue);
+        return rowValues.getTextList().contains(requiredValue);
     }
 
     public List<String> collectRowData(int... columnsIndex) {
@@ -44,29 +47,31 @@ public class TableRow extends Section {
         String[] values = new String[columnsIndex.length];
         int counter = 0;
         for (int i : columnsIndex) {
-            if (!this.rowCells.get(i).getWebElement().findElements(By.cssSelector("[aria-label='info']")).isEmpty()) {
-                this.clickCell(i);
+            if (rowCells.get(i).getWebElement().findElements(By.cssSelector("[aria-label='info']")).size() > 0) {
+                clickCell(i);
                 values[counter++] = variationInfoWindow.getId();
+//				variationInfoWindow.selectTab(VariationInfoModalWindow.AnnotationsTabs.INFO);
+//				values[counter++] = variationInfoWindow.getQualityValue();
                 variationInfoWindow.closeWindow();
             } else {
-                values[counter++] = this.rowCells.get(i).get(By.cssSelector(".ui-grid-cell-contents,.md-label")).getText();
+                values[counter++] = rowCells.get(i).get(By.cssSelector(".ui-grid-cell-contents,.md-label")).getText();
             }
         }
         return values;
     }
 
     public String collectPictData(String toPath) {
-        if (!this.rowCells.get(4).getWebElement().findElements(By.cssSelector("[aria-label='info']")).isEmpty()) {
-            String svtype = this.rowCells.get(0).getWebElement().getText();
-            String location = this.rowCells.get(3).getWebElement().getText();
+        if (rowCells.get(4).getWebElement().findElements(By.cssSelector("[aria-label='info']")).size() > 0) {
+            String svtype = rowCells.get(0).getWebElement().getText();
+            String location = rowCells.get(3).getWebElement().getText();
             variationName = svtype + "_" + location;
-            Timer.sleep(6000);
-            this.clickCell(4);
-            Timer.sleep(6000);
+            com.epam.commons.Timer.sleep(6000);
+            clickCell(4);
+            com.epam.commons.Timer.sleep(6000);
             try {
                 variationInfoWindow.savePictureVCF(toPath);
             } catch (AssertionError fail) {
-
+                fail.printStackTrace();
                 variationInfoWindow.closeWindow();
             }
             variationInfoWindow.closeWindow();
@@ -75,12 +80,9 @@ public class TableRow extends Section {
     }
 
     private Element getSpecialCell() {
-        for (Element cell : this.rowCells) {
-
-            if (!cell.getWebElement().findElements(By.cssSelector("[aria-label='Table View']")).isEmpty()) //rowValues.getElements().size()
-            {
+        for (Element cell : rowCells) {
+            if (cell.getWebElement().findElements(By.cssSelector("[aria-label='Table View']")).size() > 0) //rowValues.getElements().size()
                 return cell;
-            }
         }
         return null;
     }
@@ -89,10 +91,10 @@ public class TableRow extends Section {
      * Open Annotation window or delete bookmark
      */
     public void clickInSpeacialCell() {
-        this.rowCells.get(4).clickCenter();
+        rowCells.get(4).clickCenter();
     }
 
-    private void clickCell(int columnIndex) {
-        this.rowCells.get(columnIndex).clickCenter();
+    public void clickCell(int columnIndex) {
+        rowCells.get(columnIndex).clickCenter();
     }
 }

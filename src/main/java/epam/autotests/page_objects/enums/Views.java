@@ -12,7 +12,7 @@ public enum Views {
 
     public final String value;
 
-    Views(String value) {
+    Views(final String value) {
         this.value = value;
     }
 }

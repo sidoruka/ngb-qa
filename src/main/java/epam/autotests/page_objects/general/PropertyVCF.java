@@ -11,8 +11,7 @@ import java.util.List;
  * Created by Vsevolod_Adrianov on 7/18/2016.
  */
 public class PropertyVCF extends Section {
-    // .md-variant-properties-table
-    @FindBy(css = ".md-variant-property-single-value") //
+    @FindBy(css = ".md-variant-property-single-value")
     private List<Element> pValue;
 
     @FindBy(css = "md-radio-button")
@@ -21,9 +20,13 @@ public class PropertyVCF extends Section {
     @FindBy(css = "canvas")
     private Element pict;
 
+
+    public PropertyVCF() {
+    }
+
     //
-    public void SelectGeneFile() {
-        listGeneFiles.select(2);
+    public void SelectGeneFile(int ix) {
+        listGeneFiles.select(ix);
     }
 
     public boolean IsLoadedProperties() {

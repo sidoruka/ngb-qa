@@ -47,7 +47,7 @@ public class FiltersPanel extends VariantsPanel {
 
 
     @FindBy(xpath = ".//ngb-variants-table-column//button")
-    private Button variantsHamburger;
+    public Button variantsHamburger;
 
     @FindBy(xpath = ".//md-menu-content/md-menu-item[1]/div/md-checkbox")
     private Element filterCheckBox;
@@ -57,22 +57,20 @@ public class FiltersPanel extends VariantsPanel {
         if (filterCheckBox.getAttribute("aria-checked").toUpperCase().contains("FALSE")) { //???
             filterCheckBox.clickCenter();
             emptySpace.clickCenter();
-        } else {
+        } else
             emptySpace.clickCenter();
-        }
     }
 
     private Element getGroup(String groupName) {
         for (Element filterGroup : collapsibleSections) {
-            if (filterGroup.getAttribute("textContent").trim().equals(groupName)) {
+            if (filterGroup.getAttribute("textContent").trim().equals(groupName))
                 return filterGroup;
-            }
         }
         return null;
     }
 
     public int getCountOfSelectedFilters() {
-        return getList(By.xpath(".//md-checkbox[@aria-checked = 'true']")).size();
+        return this.getList(By.xpath(".//md-checkbox[@aria-checked = 'true']")).size();
     }
 
     public int getSizeActiveVCFFile() {
@@ -86,31 +84,33 @@ public class FiltersPanel extends VariantsPanel {
 
     public void selectFilter(FiltersGroups groupName, String... parameters) {
         switch (groupName.value) {
-            case "Gene":
+            case ("Gene"): {
                 deleteAllAddedGenes();
-                if (!"".equals(parameters[0])) {
+                if (!parameters[0].equals("")) {
                     String geneName = "";
-                    for (String parameter : parameters) {
-                        geneName = geneName + parameter + ",";
+                    for (int i = 0; i < parameters.length; i++) {
+                        geneName = geneName + parameters[i] + ",";
                     }
                     selectGene(geneName);
                 }
                 break;
-            case "Type of variant":
+            }
+            case ("Type of variant"): {
                 deleteAllAddedVariationType();
-                if (!"".equals(parameters[0])) {
+                if (!parameters[0].equals("")) {
                     String VariationType = "";
-                    for (String parameter : parameters) {
-                        VariationType = VariationType + parameter + ",";
+                    for (int i = 0; i < parameters.length; i++) {
+                        VariationType = VariationType + parameters[i] + ",";
                     }
                     selectVariationType(VariationType);
                     break;
                 }
+            }
         }
     }
 
     public boolean compareFiltersGroups() {
-        String[] defaultListOfGroups = {"GENE", "TYPE OF VARIANT", "VARIANT LOCATION"};
+        String[] defaultListOfGroups = new String[]{"GENE", "TYPE OF VARIANT", "VARIANT LOCATION"};
         List<String> actualListOfGroups = new ArrayList<>();
         for (Element filterGroup : collapsibleSections) {
             actualListOfGroups.add(filterGroup.getWebElement().getText());
@@ -120,20 +120,19 @@ public class FiltersPanel extends VariantsPanel {
 
     public boolean isFileSelected(String... files) {
         for (String fileName : files) {
-            if (!activeVCFFilesGroup.isOptionSelected(fileName)) {
+            if (!activeVCFFilesGroup.isOptionSelected(fileName))
                 return false;
-            }
         }
         return true;
     }
 
-    private void selectGene(String geneName) {
+    public void selectGene(String geneName) {
         addingGene.clickCenter();
         addingGene.sendKeys(geneName + "," + Keys.ENTER);
         addingGene.sendKeys(Keys.ENTER);
     }
 
-    private void selectVariationType(String geneName) {
+    public void selectVariationType(String geneName) {
         typeOfVariantGroup.clickCenter();
         typeOfVariantGroup.sendKeys(geneName + "," + Keys.ENTER);
         typeOfVariantGroup.sendKeys(Keys.ENTER);
@@ -143,7 +142,7 @@ public class FiltersPanel extends VariantsPanel {
         addedGenes.clear();
     }
 
-    private void deleteAllAddedVariationType() {
+    public void deleteAllAddedVariationType() {
         typeOfVariantGroup.clear();
     }
 

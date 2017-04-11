@@ -11,7 +11,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdi.version>1.0.34</jdi.version>
 		<selenium.version>2.53.1</selenium.version>
-		<allure.version>1.4.23.HOTFIX1</allure.version>
 	</properties>
 
 	<dependencies>
@@ -39,11 +38,6 @@
 			<groupId>com.epam.jdi</groupId>
 			<artifactId>jdi-uitest-web</artifactId>
 			<version>${jdi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ru.yandex.qatools.allure</groupId>
-			<artifactId>allure-testng-adaptor</artifactId>
-			<version>${allure.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -188,11 +182,6 @@
 	<reporting>
 		<excludeDefaults>true</excludeDefaults>
 		<plugins>
-			<plugin>
-				<groupId>ru.yandex.qatools.allure</groupId>
-				<artifactId>allure-maven-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
 		</plugins>
 	</reporting>
 </project>

@@ -14,7 +14,8 @@ import static epam.autotests.page_objects.site.NGB_Site.*;
 
 
 public class CheckingTrackGene extends TestBase {
-    String refPath = TestBase.CurrentDir() + "\\target\\";
+    String refPath = CurrentDir() + "\\target\\";
+    String xPath = "'/html/body/ui-view/div/div[2]/ngb-golden-layout/div/div/div/div[1]/div[2]/div/div/ngb-browser/ngb-tracks-view/div/div/div[2]/ngb-track[2]/div/div[3]/div/canvas'";
 
     @BeforeClass
     public void preparations() {
@@ -22,7 +23,6 @@ public class CheckingTrackGene extends TestBase {
         projectPage.openPanel(RESTORE_DEFAULT);
         isInState(OPEN_DATASETS_PANEL);
         mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
-        String xPath = "'/html/body/ui-view/div/div[2]/ngb-golden-layout/div/div/div/div[1]/div[2]/div/div/ngb-browser/ngb-tracks-view/div/div/div[2]/ngb-track[2]/div/div[3]/div/canvas'";
         VariationInfoModalWindow.waitVisualizer(xPath);
         System.out.println("=== CheckingTrackGene.preparation(); @BeforeClass");
     }

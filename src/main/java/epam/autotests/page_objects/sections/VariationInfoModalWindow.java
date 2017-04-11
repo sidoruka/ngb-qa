@@ -14,7 +14,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -26,32 +25,27 @@ import static org.testng.Assert.assertTrue;
 
 public class VariationInfoModalWindow extends Section {
 
+    public enum AnnotationsTabs {
+        VISUALIZER, INFO;
+    }
+
     @FindBy(xpath = ".//div[@layout-align = 'start stretch']/div[@class='ngb-variant-identifier layout-padding ng-binding']")
     private Label id;
+
     @FindBy(xpath = ".//md-pagination-wrapper/md-tab-item")
-    private Tabs<VariationInfoModalWindow.AnnotationsTabs> annotationsTabs;
+    private Tabs<AnnotationsTabs> annotationsTabs;
+
     @FindBy(xpath = ".//ngb-variant-info//div[contains(@class, 'md-variant-property-title')]")
     private Elements<Label> infoPropertiesLabels;
-
-    public static void waitVisualizer(String xPath) {
-        WebDriverWait wait = new WebDriverWait(WebSettings.getDriver(), 30);
-        try {
-            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(xPath)));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assert.isFalse(e.toString().isEmpty(), "Couldn't load visualizer tooltip");
-        }
-    }
 
     public String getId() {
         return id.getText();
     }
 
     private Label getProperties(String propTitle) {
-        for (Label infoPropertiesLabel : infoPropertiesLabels) {
-            if (infoPropertiesLabel.getText().equals(propTitle)) {
-                return infoPropertiesLabel;
-            }
+        for (int i = 0; i < infoPropertiesLabels.size(); i++) {
+            if (infoPropertiesLabels.get(i).getText().equals(propTitle))
+                return infoPropertiesLabels.get(i);
         }
         return null;
     }
@@ -60,10 +54,22 @@ public class VariationInfoModalWindow extends Section {
         return getProperties(Label).get(By.xpath("..//*[contains(@class,'md-variant-property-single-value')]")).getText();
     }
 
-    private void waitTrackLoading() {
+    public static void waitVisualizer(String xPath) {
+        WebDriverWait wait = new WebDriverWait(WebSettings.getDriver(), 30);
+        try {
+//            xPath = ".//md-progress-circular";
+//            wait.until(ExpectedConditions.invisibilityOfElementLocated((By.xpath(xPath))));
+            wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(xPath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.isFalse(e.toString().isEmpty(), "Couldn't load visualizer tooltip");
+        }
+    }
+
+    public void waitTrackLoading() {
         WebDriverWait wait = new WebDriverWait(WebSettings.getDriver(), 60);
         try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//md-progress-circular")));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//md-progress-circular")));//(".//ngb-track//div[@class='ng-hide']")));
         } catch (Exception e) {
             e.printStackTrace();
             Assert.isFalse(e.toString().isEmpty(), "Couldn't load loader");
@@ -72,7 +78,8 @@ public class VariationInfoModalWindow extends Section {
 
     public void savePictureVCF(String PathName) {
         String name = TableRow.variationName;
-        variationInfoWindow.selectTab(VariationInfoModalWindow.AnnotationsTabs.VISUALIZER);
+        variationInfoWindow.selectTab(AnnotationsTabs.VISUALIZER);
+        //waitVisualizer("//*[@id='cnv']/div");
         String xPath = "'//*[@id=\"cnv\"]/canvas'";
         try {
             savePicture(PathName, name, xPath);
@@ -81,21 +88,21 @@ public class VariationInfoModalWindow extends Section {
         }
     }
 
-    private void savePicture(String PathName, String name, String xPath) {
+    public void savePicture(String PathName, String name, String xPath) {
         waitTrackLoading();
         Timer.sleep(1000);
         File[] goldenimagearray = new File(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images").listFiles();
         String goldenimagestring = Arrays.toString(goldenimagearray).replace(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images\\", "").trim().toUpperCase();
-        if (goldenimagestring.contains(name.toUpperCase() + ".PNG")) {
+        if ((goldenimagestring.contains(name.toUpperCase() + ".PNG"))) {
             getDriver().manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
             String imgstring = null;
             try {
-                imgstring = getJSExecutor().executeScript("function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}; " +
-                        "return (getElementByXpath( " + xPath + " )).toDataURL('image/png').substring(22);").toString();
+                imgstring = getJSExecutor().executeScript(("function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}; " +
+                        "return (getElementByXpath( " + xPath + " )).toDataURL('image/png').substring(22);")).toString();
             } catch (Exception e) {
                 assertTrue(e.toString().isEmpty(), "JS execution error");
             }
-            byte[] imageBytes = DatatypeConverter.parseBase64Binary(imgstring);
+            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(imgstring);
             try {
                 FileOutputStream fos = new FileOutputStream(new File(PathName + name + ".png"));
                 fos.write(imageBytes);
@@ -107,7 +114,8 @@ public class VariationInfoModalWindow extends Section {
         }
     }
 
-    private void comparisonData(String PathName, String name) {
+
+    public void comparisonData(String PathName, String name) {
         try {
             String test = PathName + "\\src\\main\\resources\\diff\\perceptualdiff.exe "
                     + PathName + "\\target\\" + name + ".png "
@@ -116,7 +124,7 @@ public class VariationInfoModalWindow extends Section {
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", test);
             builder.redirectErrorStream(true);
             Process p = builder.start();
-            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));) {
                 String message = r.readLine();
                 assertTrue(message.isEmpty(), message);
             } catch (Exception e) {
@@ -129,43 +137,38 @@ public class VariationInfoModalWindow extends Section {
 
     public void closeWindow() {
         int counter = 0;
-        while (isDisplayed() && counter < 10) {
+        while (this.isDisplayed() && counter < 10) {
             id.clickCenter();
-            getWebElement().sendKeys(Keys.ESCAPE);
+            this.getWebElement().sendKeys(Keys.ESCAPE);
             Timer.sleep(1000);
             counter++;
         }
-        if (counter >= 10) {
-            Assert.isFalse(isDisplayed(), "Couldn't close modal window");
-        }
+        if (counter >= 10)
+            Assert.isFalse(this.isDisplayed(), "Couldn't close modal window");
     }
 
-    private void selectTab(VariationInfoModalWindow.AnnotationsTabs tabName) {
+    public void selectTab(AnnotationsTabs tabName) {
         annotationsTabs.select(tabName);
     }
 
-    private String getQualityValue() {
+    public String getQualityValue() {
         return getProperties("Quality").get(By.xpath(".//parent::div/following-sibling::div/div")).getText();
     }
 
     public boolean isQualityWithinRange(String[] range) {
-        selectTab(VariationInfoModalWindow.AnnotationsTabs.INFO);
+        selectTab(AnnotationsTabs.INFO);
         float fQualityValue = Float.parseFloat(getQualityValue());
         switch (range.length) {
             case 1:
                 return fQualityValue >= Float.parseFloat(range[0]);
-            case 2:
-                if (range[0] == null) {
+            case 2: {
+                if (range[0] == null)
                     return fQualityValue <= Float.parseFloat(range[1]);
-                } else {
-                    return fQualityValue >= Float.parseFloat(range[0]) && fQualityValue <= Float.parseFloat(range[1]);
-                }
+                else
+                    return (fQualityValue >= Float.parseFloat(range[0]) && fQualityValue <= Float.parseFloat(range[1]));
+            }
             default:
                 throw new IllegalArgumentException("Wrong count of parameters");
         }
-    }
-
-    public enum AnnotationsTabs {
-        VISUALIZER, INFO
     }
 }

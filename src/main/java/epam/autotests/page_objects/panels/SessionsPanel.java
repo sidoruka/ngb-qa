@@ -31,23 +31,21 @@ public class SessionsPanel extends Panel {
     }
 
     public boolean isThereAddedBookmarks(String... bookmarks) {
-        if (bookmarksTable.tableRows.isEmpty()) {
+        if (bookmarksTable.tableRows.size() == 0)
             return false;
-        } else {
+        else
             return bookmarksTable.collectColumnValues("Name", false).contains(Arrays.asList(bookmarks));
-        }
     }
 
     public void isThereRequiredBookmark(String bookmark) {
-        if (this.bookmarksTable.findRow(bookmark) == null) {
+        if (bookmarksTable.findRow("Name", bookmark) == null)
             NGB_Site.projectPage.refresh();
-        } else {
-            Assert.isFalse(this.bookmarksTable.findRow(bookmark) == null, "Bookmark '" + bookmark + "' wasn't found");
-        }
+        else
+            Assert.isFalse(bookmarksTable.findRow("Name", bookmark) == null, "Bookmark '" + bookmark + "' wasn't found");
     }
 
     public void chooseBookmark(String bookmark1) {
-        bookmarksTable.findRow(bookmark1).clickCenter();
+        bookmarksTable.findRow("Name", bookmark1).clickCenter();
     }
 
 }

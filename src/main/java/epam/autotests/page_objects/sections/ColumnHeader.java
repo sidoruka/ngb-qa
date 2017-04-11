@@ -5,7 +5,7 @@ import com.epam.jdi.uitests.web.selenium.elements.common.Text;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 import org.openqa.selenium.support.FindBy;
 
-class ColumnHeader extends Section {
+public class ColumnHeader extends Section {
 
     @FindBy(css = ".ui-grid-header-cell-label")
     private Text columnName;
@@ -22,8 +22,8 @@ class ColumnHeader extends Section {
 
     public String getSortingType() {
         String typeOfSort;
-        typeOfSort = getAttribute("aria-sort").toLowerCase();
-        switch (getAttribute("aria-sort")) {
+        typeOfSort = this.getAttribute("aria-sort").toLowerCase();
+        switch (this.getAttribute("aria-sort")) {
             case "none":
                 typeOfSort = "None Sorting";
                 break;
@@ -40,6 +40,7 @@ class ColumnHeader extends Section {
     public boolean isSorted() {
         return ascendingSortSign.isDisplayed() || descendingSortSign.isDisplayed();
     }
+
 
     public void click() {
         columnName.clickCenter();

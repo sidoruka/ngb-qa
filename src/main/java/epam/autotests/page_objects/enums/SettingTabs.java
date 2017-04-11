@@ -7,7 +7,9 @@ public enum SettingTabs {
     GFF_GTF("GFF/GTF"),
     CUSTOMIZE("CUSTOMIZE");
 
-    SettingTabs(String value) {
-        String value1 = value;
+    public final String value;
+
+    SettingTabs(final String value) {
+        this.value = value;
     }
 }

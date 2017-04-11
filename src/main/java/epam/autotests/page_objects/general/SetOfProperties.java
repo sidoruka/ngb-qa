@@ -10,10 +10,11 @@ import java.util.List;
 
 public class SetOfProperties extends Section {
 
+    @FindBy(xpath = ".//button")
+    public Element groupHeader;
+
     @FindBy(xpath = ".//button/following-sibling::div//md-checkbox")
     public CheckList<?> parametersChlst;
-    @FindBy(xpath = ".//button")
-    private Element groupHeader;
 
     public String getGroupName() {
         return groupHeader.getAttribute("aria-label");
@@ -22,11 +23,10 @@ public class SetOfProperties extends Section {
     public boolean isCheckListWithoutSelection() {
         List<String> options = parametersChlst.getOptions();
         for (String chLstItem : options) {
-            if (parametersChlst.isSelected(chLstItem)) {
-                return true;
-            }
+            if (parametersChlst.isSelected(chLstItem))
+                return false;
         }
-        return false;
+        return true;
     }
 
     public void checkOptions(String... parameters) {
@@ -48,13 +48,12 @@ public class SetOfProperties extends Section {
     public int getNumberChecks() {
         List<String> options = parametersChlst.getOptions();
         int N = 0;
-        for (String chLstItem : options) {
-            N++;
-        }
+        for (String chLstItem : options) N++;
         return N;
     }
 
     public List<String> getListOfSelectedFilters() {
-        return parametersChlst.getOptions();
+        List<String> options = parametersChlst.getOptions();
+        return options;
     }
 }

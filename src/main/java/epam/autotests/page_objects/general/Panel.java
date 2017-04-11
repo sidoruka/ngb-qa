@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 /**
  * @author Vsevolod Adrianov Created by Vsevolod_Adrianov in June, 2016.
- *         <p>
+ *         <p/>
  *         <b>Refactored</b> by Aksenov Oleg in October, 2016
  */
 
@@ -18,7 +18,7 @@ public abstract class Panel extends Section {
 
 
     public String getTitle() {
-        return get(By.cssSelector(".lm_title")).getText();
+        return this.get(By.cssSelector(".lm_title")).getText();
     }
 
     public void closeClick() {

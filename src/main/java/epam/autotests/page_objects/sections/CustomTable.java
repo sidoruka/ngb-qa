@@ -21,90 +21,85 @@ import static epam.autotests.utils.TestBase.compareListOfArrays;
 
 public class CustomTable extends Section {
 
+    @FindBy(css = ".ui-grid-header-cell-label")
+    public TextList<?> columnsList;
 
     @FindBy(css = "[ui-grid-row='row']")
     public Elements<TableRow> tableRows;
-    @FindBy(css = ".ui-grid-header-cell-label")
-    private TextList<?> columnsList;
+
     @FindBy(xpath = "//div[@role='columnheader']")
-    private Elements<ColumnHeader> columns;
+    public Elements<ColumnHeader> columns;
+
 
 
     public boolean checkColumns(String[] expColList) {
         List<String> actualList = columnsList.getTextList();
         System.out.println("Actual column list:   " + actualList + "\n"
                 + "Expected column list: " + Arrays.toString(expColList));
-        return actualList.equals(Arrays.asList(expColList));
+        return (actualList.equals(Arrays.asList(expColList)));
     }
 
     private ColumnHeader getSortedColumn() {
-        for (ColumnHeader column : columns) {
-            if (column.isSorted()) {
-                return column;
-            }
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).isSorted())
+                return columns.get(i);
         }
         return null;
     }
 
     public Boolean checkSortedColumn(String string) {
         ColumnHeader sortedCol = getSortedColumn();
-        if (sortedCol == null) {
+        if (sortedCol == null)
             return false;
-        } else {
-            return sortedCol.getColumnName().equals(string) ? true : false;
-        }
+        else
+            return (sortedCol.getColumnName().equals(string)) ? true : false;
     }
 
     public Boolean checkTypeOfSorting(String string) {
-        return getSortedColumn().getSortingType().equals(string) ? true : false;
+        return (getSortedColumn().getSortingType().equals(string)) ? true : false;
     }
 
     private String getSortedColumnName() {
-        for (ColumnHeader column : columns) {
-            if (column.isSorted()) {
-                return column.getColumnName();
-            }
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).isSorted())
+                return columns.get(i).getColumnName();
         }
         return "";
     }
 
     public int getColumnIndex(String columnName) {
         int counter = 0;
-        for (ColumnHeader column : columns) {
-            if (column.getColumnName().equals(columnName)) {
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).getColumnName().equals(columnName))
                 break;
-            }
             counter++;
         }
         return counter;
     }
 
-    private boolean isColumnPresent(String colName) {
+    public boolean isColumnPresent(String colName) {
         return columnsList.getTextList().contains(colName);
     }
 
     public List<?> collectColumnValues(String columnName, boolean isNumeric) {
         List columnsValues;
-        if (isNumeric) {
+        if (isNumeric)
             columnsValues = new ArrayList<Integer>();
-        } else {
+        else
             columnsValues = new ArrayList<String>();
-        }
 
         if (isColumnPresent(columnName)) {
             int index = getColumnIndex(columnName);
             int visibleRowsCount = getCountOfVisibleRows();
             for (int i = 0; i < visibleRowsCount; i++) {
-                while (!tableRows.get(i).isDisplayed()) {
+                while (!tableRows.get(i).isDisplayed())
                     Timer.sleep(1000);
-                }
                 if (isNumeric) {
                     columnsValues.add(Integer.parseInt(tableRows.get(i).getRowValue(index).replaceAll("[^0-9]", "")));
                 } else {
                     String sValue = tableRows.get(i).getRowValue(index);
-                    if (!sValue.isEmpty()) {
+                    if (!sValue.isEmpty())
                         columnsValues.add(sValue);
-                    }
                 }
             }
         }
@@ -123,7 +118,7 @@ public class CustomTable extends Section {
         return isListSorted(collectColumnValues(colName.value, isNumeric), ascending);
     }
 
-    public void scrollTo() {
+    public void scrollTo(int rowNumber) {
         Actions action = new Actions(getDriver());
 
     }
@@ -131,35 +126,35 @@ public class CustomTable extends Section {
     private int getCountOfVisibleRows() {
         int counter = 0;
         for (TableRow row : tableRows) {
-            if (row.isDisplayed()) {
+            if (row.isDisplayed())
                 counter++;
-            }
         }
         return counter;
     }
 
-    public TableRow findRow(String value) {
+    public TableRow findRow(String columnName, String value) {
 
-        for (TableRow tableRow : tableRows) {
-            if (tableRow.getRowValue(getColumnIndex("Name")).equals(value)) {
-                return tableRow;
-            }
+        for (int i = 0; i < tableRows.size(); i++) {
+            if (tableRows.get(i).getRowValue(getColumnIndex(columnName)).equals(value))
+                return tableRows.get(i);
         }
         return null;
     }
 
+    /**
+     * "Sort None", "Sort Descending", "Sort Ascending"
+     */
     public void setSorting(VarTableColumns colName, SortingTypes type) {
-        if (!isColumnPresent(colName.value)) {
+        if (!isColumnPresent(colName.value))
             throw new NoSuchElementException("[ColumnSorting]:Column '" + colName.value + "' not found.");
-        } else {
-            for (ColumnHeader column : columns) {
-                if (column.getColumnName().equals(colName.value)) {
+        else {
+            for (int i = 0; i < columns.size(); i++) {
+                if (columns.get(i).getColumnName().equals(colName.value)) {
                     for (int j = 0; j < 3; j++) {
-                        if (!column.getSortingType().equals(type.value)) {
-                            column.click();
-                        } else {
+                        if (!columns.get(i).getSortingType().equals(type.value)) {
+                            columns.get(i).click();
+                        } else
                             break;
-                        }
                     }
                     break;
                 }
@@ -171,30 +166,30 @@ public class CustomTable extends Section {
         ColumnHeader column = getSortedColumn();
         if (column != null) {
             for (int j = 0; j < 3; j++) {
-                if (!"None Sorting".equals(column.getSortingType())) {
+                if (!column.getSortingType().equals("None Sorting")) {
                     column.click();
-                } else {
+                } else
                     break;
-                }
             }
         }
     }
 
-    private List<String[]> collectAllRowData(int... colIndexes) {
+    public List<String[]> collectAllRowData(int... colIndexes) {
         List<String[]> rows = new ArrayList<>();
-        for (TableRow tableRow : tableRows) {
-            rows.add(tableRow.collectRowData2(colIndexes));
+        for (int i = 0; i < tableRows.size(); i++) {
+            rows.add(tableRows.get(i).collectRowData2(colIndexes));
         }
         return rows;
     }
 
     public void collectAllPictData(String pPath) {
         String tP = pPath + "\\target\\";
-        for (TableRow tableRow : tableRows) {
+        for (int i = 0; i < tableRows.size(); i++) {
             try {
-                tableRow.collectPictData(tP);
+                tableRows.get(i).collectPictData(tP);
             } catch (Exception e) {
                 e.printStackTrace();
+                continue;
             }
         }
     }
@@ -208,15 +203,9 @@ public class CustomTable extends Section {
         while (!compareListOfArrays(list2, currentList)) {
             list2 = currentList;
             for (String[] item : currentList) {
-                if (!itemsFromChart.contains(item)) {
+                if (!itemsFromChart.contains(item))
                     itemsFromChart.add(item);
-                }
             }
-//			if(scrollBarElement.get(By.xpath("//*[@id='1484909765729-grid-container']")).isDisplayed()){
-//				for (int i = 0; i < countOfVisibleRows; i++) {
-//					scrollBarElement.getWebElement().sendKeys(Keys.ARROW_DOWN);
-//				}
-//			}
             Timer.sleep(1000);
             currentList = collectAllRowData(0, 1, 3, 4);
         }
@@ -232,10 +221,9 @@ public class CustomTable extends Section {
     }
 
     public boolean isColumnContainOnlyOneValue(String value) {
-        for (TableRow tableRow : tableRows) {
-            if (!tableRow.getRowValue(0).equals(value)) {
+        for (int i = 0; i < tableRows.size(); i++) {
+            if (!tableRows.get(i).getRowValue(0).equals(value))
                 return false;
-            }
         }
         return true;
     }
@@ -245,14 +233,13 @@ public class CustomTable extends Section {
     }
 
     public void deleteRecord(String bookmark, boolean confirmed) {
-        TableRow row = findRow(bookmark);
+        TableRow row = findRow("Name", bookmark);
         if (row != null) {
             row.clickInSpeacialCell(); //delete bookmark
-            if (confirmed) {
+            if (confirmed)
                 confirmWindow.pressOK();
-            } else {
+            else
                 confirmWindow.pressCancel();
-            }
         }
     }
 }

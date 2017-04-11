@@ -45,60 +45,55 @@ public class TrackListPanel extends Panel {
 
     private Element getGroup(String groupName) {
         for (SetOfProperties filterGroup : collapsibleSections) {
-            if (filterGroup.getGroupName().equals(groupName)) {
+            if (filterGroup.getGroupName().equals(groupName))
                 return filterGroup;
-            }
         }
         return null;
     }
 
     private boolean isGroupOpened(Element group) {
         switch (group.get(By.xpath(".//ng-md-icon")).getAttribute("class")) {
-            case "rotated ng-scope rotate-back":
+            case ("rotated ng-scope rotate-back"):
                 return true;
-            case "rotated ng-scope rotate":
+            case ("rotated ng-scope rotate"):
                 return false;
             default:
                 return false;
         }
     }
 
-    private void openFilterGroup(FiltersGroups groupName) {
+    public void openFilterGroup(FiltersGroups groupName) {
         Element group = getGroup(groupName.value);
-        if (!isGroupOpened(group)) {
+        if (!isGroupOpened(group))
             group.clickCenter();
-        }
     }
 
     public void closeFilterGroup(FiltersGroups groupName) {
         Element group = getGroup(groupName.value);
-        if (isGroupOpened(group)) {
+        if (isGroupOpened(group))
             group.clickCenter();
-        }
     }
 
 
     public void selectFilter(FiltersGroups groupName, String... parameters) {
         openFilterGroup(groupName);
         switch (groupName.value) {
-            case "VCF":
-                if (parameters.length == 1 && "".equals(parameters[0])) {
-                    if (vcfFilesGroup.isCheckListWithoutSelection()) {
+            case ("VCF"): {
+                if (parameters.length == 1 && parameters[0].equals("")) {
+                    if (!vcfFilesGroup.isCheckListWithoutSelection())
                         vcfFilesGroup.unCheckAllOptions();
-                    }
-                } else {
+                } else
                     vcfFilesGroup.checkOptions(parameters);
-                }
                 break;
-            case "Gene":
-                if (parameters.length == 1 && "".equals(parameters[0])) {
-                    if (geneGroup.isCheckListWithoutSelection()) {
+            }
+            case ("Gene"): {
+                if (parameters.length == 1 && parameters[0].equals("")) {
+                    if (!geneGroup.isCheckListWithoutSelection())
                         geneGroup.unCheckAllOptions();
-                    }
-                } else {
+                } else
                     geneGroup.checkOptions(parameters);
-                }
                 break;
+            }
         }
     }
 
@@ -116,13 +111,14 @@ public class TrackListPanel extends Panel {
     }
 
     public int getCountOfSelectedFilters() {
-        return getList(By.xpath(".//md-checkbox[@aria-checked = 'true']")).size();
+        return this.getList(By.xpath(".//md-checkbox[@aria-checked = 'true']")).size();
     }
 
     public List<String> getListOfSelectedFilters() {
         List<String> selectedFilters = new ArrayList<>();
         for (CheckBox checkbox : selectedCheckboxes) {
-            selectedFilters.add(checkbox.get(By.xpath(".//ancestor::div[@class='animate-show u-column-padding']/preceding-sibling::button")).getText().replaceAll("\\s", "") + " " + checkbox.get(By.xpath(".//div[@class='md-label']/span")).getText());
+            selectedFilters.add(checkbox.get(By.xpath(".//ancestor::div[@class='animate-show u-column-padding']/preceding-sibling::button")).getText().replaceAll("\\s", "").
+                    concat(" ").concat(checkbox.get(By.xpath(".//div[@class='md-label']/span")).getText()));
         }
         return selectedFilters;
     }
@@ -138,16 +134,15 @@ public class TrackListPanel extends Panel {
         SoftAssert soft_assert = new SoftAssert();
         List<String> checkboxesText = collectFoundItems();
         for (String item : checkboxesText) {
-//			soft_assert.assertTrue(item.contains(searchRequest), item +" doesn't contain required string '" + searchRequest+"'");
             soft_assert.assertTrue(Pattern.compile(Pattern.quote(searchRequest), Pattern.CASE_INSENSITIVE).matcher(item).find(), item + " doesn't contain required string '" + searchRequest + "'");
         }
         soft_assert.assertAll();
     }
 
-    private List<String> collectFoundItems() {
+    public List<String> collectFoundItems() {
         List<String> checkboxesText = new ArrayList<>();
-        for (SetOfProperties collapsibleSection : collapsibleSections) {
-            checkboxesText.addAll(collapsibleSection.parametersChlst.getOptions());
+        for (int i = 0; i < collapsibleSections.size(); i++) {
+            checkboxesText.addAll(collapsibleSections.get(i).parametersChlst.getOptions());
         }
         return checkboxesText;
     }

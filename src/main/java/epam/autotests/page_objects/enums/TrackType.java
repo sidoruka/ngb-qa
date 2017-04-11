@@ -5,5 +5,5 @@ public enum TrackType {
     VCF,
     GENE,
     WIG,
-    SEG
+    SEG;
 }
