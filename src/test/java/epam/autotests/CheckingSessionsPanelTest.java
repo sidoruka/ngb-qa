@@ -1,5 +1,6 @@
 package epam.autotests;
 
+import com.epam.commons.Timer;
 import com.epam.web.matcher.testng.Assert;
 import epam.autotests.utils.TestBase;
 import org.testng.annotations.AfterClass;
@@ -46,6 +47,7 @@ public class CheckingSessionsPanelTest extends TestBase {
         projectPage.closeAllTracks();
         isInState(OPEN_SESSIONS_PANEL);
         projectPage.sessionsPanel.chooseBookmark(bookmark1);
+        Timer.sleep(1000);
         projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "2");
         projectPage.sessionsPanel.deleteBookmarkWithoutConfirmation(bookmark1);
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
@@ -56,8 +58,8 @@ public class CheckingSessionsPanelTest extends TestBase {
 
     @AfterClass(alwaysRun = true)
     public void deleteCreatedBookmarks() {
-        projectPage.sessionsPanel.deleteBookmarks(bookmark1);
-        Assert.isFalse(projectPage.sessionsPanel.isThereAddedBookmarks(bookmark1), "There are remained bookmarks added during the test in the table");
+//        projectPage.sessionsPanel.deleteBookmarks(bookmark1);
+//        Assert.isFalse(projectPage.sessionsPanel.isThereAddedBookmarks(bookmark1), "There are remained bookmarks added during the test in the table");
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingSessionsPanelTest.deleteCreatedBookmarks(); @AfterClass(alwaysRun=true)");
