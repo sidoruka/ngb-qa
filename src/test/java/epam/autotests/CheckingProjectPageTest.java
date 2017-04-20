@@ -14,7 +14,9 @@ import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_VA
 import static epam.autotests.page_objects.enums.SortingTypes.ASC;
 import static epam.autotests.page_objects.enums.SortingTypes.DESC;
 import static epam.autotests.page_objects.enums.VarTableColumns.*;
+import static epam.autotests.page_objects.enums.Views.DATASETS;
 import static epam.autotests.page_objects.enums.Views.RESTORE_DEFAULT;
+import static epam.autotests.page_objects.enums.Views.VARIANTS;
 import static epam.autotests.page_objects.site.NGB_Site.mainPage;
 import static epam.autotests.page_objects.site.NGB_Site.projectPage;
 
@@ -25,11 +27,10 @@ public class CheckingProjectPageTest extends TestBase {
     public void variationPanel() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
-        isInState(OPEN_DATASETS_PANEL);
-        VariationInfoModalWindow.waitVisualizer("//*[@id=\"1489086710371-grid-container\"]");
-        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
-        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-        isInState(OPEN_VARIANTS_PANEL);
+//        VariationInfoModalWindow.waitVisualizer("//*[@id=\"1489086710371-grid-container\"]");
+        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf", true);
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf", true);
+        projectPage.openPanel(VARIANTS);
         projectPage.variantsPanel.checkSetOfColumns("Type", "Chr", "Gene", "Position", "Info");
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
@@ -40,10 +41,9 @@ public class CheckingProjectPageTest extends TestBase {
     public void checkingVariantsSorting() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
-        isInState(OPEN_DATASETS_PANEL);
-        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
-        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-        isInState(OPEN_VARIANTS_PANEL);
+        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf", true);
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf", true);
+        projectPage.openPanel(VARIANTS);
         projectPage.variantsPanel.variantsTable.setSorting(TYPE, ASC);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(TYPE, false, true));
         projectPage.variantsPanel.variantsTable.setSorting(TYPE, DESC);
@@ -63,7 +63,7 @@ public class CheckingProjectPageTest extends TestBase {
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(CHR, false, true));
         projectPage.variantsPanel.variantsTable.setSorting(CHR, DESC);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnSorted(CHR, false, false));
-        isInState(OPEN_DATASETS_PANEL);
+        projectPage.openPanel(DATASETS);
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingProjectPageTest.checkingVariantsSorting(); @Test(priority=7)");
@@ -72,7 +72,7 @@ public class CheckingProjectPageTest extends TestBase {
     @AfterClass(alwaysRun = true)
     public void resetBrowser() {
         projectPage.closeAllTracks();
-        Timer.sleep(1000);
+//        Timer.sleep(1000);
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingProjectPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
         ;

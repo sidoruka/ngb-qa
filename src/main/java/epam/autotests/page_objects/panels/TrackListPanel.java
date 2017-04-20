@@ -63,13 +63,13 @@ public class TrackListPanel extends Panel {
     }
 
     public void openFilterGroup(FiltersGroups groupName) {
-        Element group = getGroup(groupName.value);
+        Element group = getGroup(groupName.toString());
         if (!isGroupOpened(group))
             group.clickCenter();
     }
 
     public void closeFilterGroup(FiltersGroups groupName) {
-        Element group = getGroup(groupName.value);
+        Element group = getGroup(groupName.toString());
         if (isGroupOpened(group))
             group.clickCenter();
     }
@@ -77,8 +77,8 @@ public class TrackListPanel extends Panel {
 
     public void selectFilter(FiltersGroups groupName, String... parameters) {
         openFilterGroup(groupName);
-        switch (groupName.value) {
-            case ("VCF"): {
+        switch (groupName) {
+            case VCF: {
                 if (parameters.length == 1 && parameters[0].equals("")) {
                     if (!vcfFilesGroup.isCheckListWithoutSelection())
                         vcfFilesGroup.unCheckAllOptions();
@@ -86,7 +86,7 @@ public class TrackListPanel extends Panel {
                     vcfFilesGroup.checkOptions(parameters);
                 break;
             }
-            case ("Gene"): {
+            case GENE: {
                 if (parameters.length == 1 && parameters[0].equals("")) {
                     if (!geneGroup.isCheckListWithoutSelection())
                         geneGroup.unCheckAllOptions();
@@ -126,7 +126,7 @@ public class TrackListPanel extends Panel {
     public void search(String searchRequest) {
         searchField.clear();
         searchField.sendKeys(searchRequest);
-        Timer.sleep(1000);
+//        Timer.sleep(1000);
 
     }
 

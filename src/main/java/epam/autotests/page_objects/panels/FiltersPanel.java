@@ -83,8 +83,8 @@ public class FiltersPanel extends VariantsPanel {
 
 
     public void selectFilter(FiltersGroups groupName, String... parameters) {
-        switch (groupName.value) {
-            case ("Gene"): {
+        switch (groupName) {
+            case GENE: {
                 deleteAllAddedGenes();
                 if (!parameters[0].equals("")) {
                     String geneName = "";
@@ -95,7 +95,7 @@ public class FiltersPanel extends VariantsPanel {
                 }
                 break;
             }
-            case ("Type of variant"): {
+            case TYPE_VARIANT: {
                 deleteAllAddedVariationType();
                 if (!parameters[0].equals("")) {
                     String VariationType = "";

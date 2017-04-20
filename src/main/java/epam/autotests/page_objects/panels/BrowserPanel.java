@@ -19,6 +19,8 @@ import org.testng.asserts.SoftAssert;
 import java.util.ArrayList;
 import java.util.List;
 
+import static epam.autotests.page_objects.enums.TrackType.BAM;
+
 
 /**
  * Created by Vsevolod_Adrianov on 8/5/2016.
@@ -107,50 +109,6 @@ public class BrowserPanel extends Panel {
 
     public String nameOfType(int index) {
         return typeDiagram.NameOfType(index);
-    }
-
-    public boolean isIn(String Position) {
-        String dd = this.getDriver().findElement(By.cssSelector(".lm_tab ngb-coordinates")).getText();
-        int i = dd.lastIndexOf(':');
-        long d1, d2, p;
-        String Chromosome = dd.substring(0, i);
-        String s0 = dd.substring(i + 1, dd.length());
-        i = s0.lastIndexOf('-');
-        String s1 = s0.substring(1, i - 1);
-        String s2 = s0.substring(i + 2, s0.length());
-        s1.trim();
-        s2.trim();
-
-        System.out.println("Chromosome= " + Chromosome + "  Interval=" + s0);
-        System.out.println("  Position =<" + Position + ">");
-        System.out.println("    string  [" + s1 + "..." + s2 + "]");
-        p = Long.valueOf(Position);
-        d1 = Long.valueOf(s1);
-        d2 = Long.valueOf(s2);
-        System.out.println("      long  [" + d1 + "..." + d2 + "]");
-        Boolean result;
-
-        if ((d1 < p) && (p < d2))
-            result = true;
-        else
-            result = false;
-        System.out.println("  result is(" + result + ")");
-
-        return result;
-    }
-
-
-    public void changeZoom(String sign, int repetition) {
-        for (int i = 0; i < repetition; i++) {
-            switch (sign) {
-                case "+":
-                    zoomIn.clickCenter();
-                    break;
-                case "-":
-                    zoomOut.clickCenter();
-                    break;
-            }
-        }
     }
 
     public int getCountOfOpenedTracks() {
@@ -293,6 +251,7 @@ public class BrowserPanel extends Panel {
                         trackMenuNameCasted = menuItems.get(0).getText();
                         break;
                 }
+                break;
         }
 
         menuItems.get(trackMenuNameCasted).click();

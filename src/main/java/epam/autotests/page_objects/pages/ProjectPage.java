@@ -92,8 +92,8 @@ public class ProjectPage extends WebPage {
         if (closeAllTracksButton.isDisplayed()) {
             closeAllTracksButton.clickCenter();
             popUpOKButton.click();
-            isInState(OPEN_DATASETS_PANEL);
-            assertEquals(true, mainPage.datasetsPanel.checkBoxIsSelected(), "dataset or file stil selected");
+            projectPage.openPanel(DATASETS);
+            assertEquals(true, mainPage.datasetsPanel.isBoxSelected(), "dataset or file stil selected");
         }
 
     }
@@ -118,7 +118,7 @@ public class ProjectPage extends WebPage {
     }
 
     public void openFilter() {
-        isInState(OPEN_VARIANTS_PANEL);
+        projectPage.openPanel(VARIANTS);
         filterPanel.openFilter();
     }
 
@@ -130,13 +130,13 @@ public class ProjectPage extends WebPage {
 
     public void addBookmark(String bookmarkName) {
         sessionBtn.click();
-        Timer.sleep(1000);
+//        Timer.sleep(1000);
         sessionTextField.focus();
         sessionTextField.sendKeys(bookmarkName + Keys.ENTER);
     }
 
     public void checkViewAfterAddition() {
-        Timer.sleep(1000);
+//        Timer.sleep(1000);
         com.epam.web.matcher.junit.Assert.isTrue(sessionBtn.getAttribute("class").contains("success-save"), "Bookmark sign isn't green");
         com.epam.web.matcher.junit.Assert.isFalse(sessionTextField.isDisplayed(), "Text field for bookmark's name is still displayed");
     }
@@ -175,7 +175,7 @@ public class ProjectPage extends WebPage {
     public void checkDefaultView() {
         SoftAssert soft_assert = new SoftAssert();
         List<String> defaultPanelsSet = new ArrayList<String>(
-                Arrays.asList(BROWSER.value.toUpperCase(), VARIANTS.value.toUpperCase(), TRACK_LIST.value.toUpperCase()));
+                Arrays.asList(BROWSER.toString(), VARIANTS.toString(), TRACK_LIST.toString()));
         soft_assert.assertTrue(header.checkView(this), "Some elements in Header are displayed or not displayed");
         soft_assert.assertTrue(compareTwoStringLists(getNamesOfOpenedPanels(), defaultPanelsSet), "Set of default opened panels is not as expected");
         soft_assert.assertAll();
@@ -191,19 +191,19 @@ public class ProjectPage extends WebPage {
 
     private Element getPanelTab(Views panelName) {
         String browser = "BROWSER";
-        if (browser.equals(panelName.value.toUpperCase())) {
+        if (browser.equalsIgnoreCase(panelName.toString())) {
             for (Element panelTab : panelsTabs) {
                 String ss1 = panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim();
-                System.out.println("Tab name> <" + ss1 + "> [" + panelName.value.toUpperCase() + "]");
-                if (panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim().equals(panelName.value))
+                System.out.println("Tab name> <" + ss1 + "> [" + panelName.toString().toUpperCase() + "]");
+                if (panelTab.get(By.cssSelector(".lm_title .ng-hide")).getAttribute("textContent").trim().equalsIgnoreCase(panelName.toString()))
                     return panelTab;
             }
             return null;
         }
         for (Element panelTab : panelsTabs) {
             String ss1 = panelTab.get(By.xpath("./span")).getText();
-            System.out.println("Tab name> <" + ss1 + "> [" + panelName.value.toUpperCase() + "]");
-            if (panelTab.get(By.xpath("./span")).getText().equals(panelName.value.toUpperCase()))
+            System.out.println("Tab name> <" + ss1 + "> [" + panelName.toString().toUpperCase() + "]");
+            if (panelTab.get(By.xpath("./span")).getText().equalsIgnoreCase(panelName.toString()))
                 return panelTab;
         }
         return null;
@@ -234,7 +234,7 @@ public class ProjectPage extends WebPage {
 
     public void checkLastTrack(String trackTitle) {
         List<String> tracksList = browserPanel.getTracksTitle("VCF");
-        Assert.isTrue(tracksList.get(tracksList.size() - 1).equals(trackTitle), "Wrong last track");
+        Assert.isTrue(tracksList.get(tracksList.size() - 1).equalsIgnoreCase(trackTitle), "Wrong last track");
     }
 
     public void checkingViewOfBookmarksAndBrowser(String bookmarkName, String chromosome) {

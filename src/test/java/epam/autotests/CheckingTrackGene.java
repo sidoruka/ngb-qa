@@ -21,8 +21,8 @@ public class CheckingTrackGene extends TestBase {
     public void preparations() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
-        isInState(OPEN_DATASETS_PANEL);
-        mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
+        mainPage.datasetsPanel.select("/SV_Sample1", true);
+        VariationInfoModalWindow.waitVisualizer(xPath);
         System.out.println("=== CheckingTrackGene.preparation(); @BeforeClass");
     }
 

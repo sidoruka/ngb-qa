@@ -28,7 +28,6 @@ public class TableRow extends Section {
         return rowValues.getTextList().get(columnIndex);
     }
 
-    public static String variationName;
 
     public boolean isRowContainsValue(String requiredValue) {
         return rowValues.getTextList().contains(requiredValue);
@@ -50,8 +49,6 @@ public class TableRow extends Section {
             if (rowCells.get(i).getWebElement().findElements(By.cssSelector("[aria-label='info']")).size() > 0) {
                 clickCell(i);
                 values[counter++] = variationInfoWindow.getId();
-//				variationInfoWindow.selectTab(VariationInfoModalWindow.AnnotationsTabs.INFO);
-//				values[counter++] = variationInfoWindow.getQualityValue();
                 variationInfoWindow.closeWindow();
             } else {
                 values[counter++] = rowCells.get(i).get(By.cssSelector(".ui-grid-cell-contents,.md-label")).getText();
@@ -60,23 +57,22 @@ public class TableRow extends Section {
         return values;
     }
 
-    public String collectPictData(String toPath) {
+    public void collectPictData(String toPath) {
         if (rowCells.get(4).getWebElement().findElements(By.cssSelector("[aria-label='info']")).size() > 0) {
             String svtype = rowCells.get(0).getWebElement().getText();
             String location = rowCells.get(3).getWebElement().getText();
-            variationName = svtype + "_" + location;
+            String variationName = svtype + "_" + location;
             com.epam.commons.Timer.sleep(6000);
             clickCell(4);
             com.epam.commons.Timer.sleep(6000);
             try {
-                variationInfoWindow.savePictureVCF(toPath);
+                variationInfoWindow.savePictureVCF(toPath, variationName);
             } catch (AssertionError fail) {
                 fail.printStackTrace();
                 variationInfoWindow.closeWindow();
             }
             variationInfoWindow.closeWindow();
         }
-        return variationName;
     }
 
     private Element getSpecialCell() {

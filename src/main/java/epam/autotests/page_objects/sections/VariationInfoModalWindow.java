@@ -8,11 +8,14 @@ import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 import com.epam.jdi.uitests.web.settings.WebSettings;
 import com.epam.web.matcher.testng.Assert;
 import epam.autotests.utils.TestBase;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.ErrorMessages;
+import junit.framework.AssertionFailedError;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.asserts.Assertion;
 
 import java.io.*;
 import java.util.Arrays;
@@ -57,8 +60,6 @@ public class VariationInfoModalWindow extends Section {
     public static void waitVisualizer(String xPath) {
         WebDriverWait wait = new WebDriverWait(WebSettings.getDriver(), 30);
         try {
-//            xPath = ".//md-progress-circular";
-//            wait.until(ExpectedConditions.invisibilityOfElementLocated((By.xpath(xPath))));
             wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(xPath)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,41 +77,42 @@ public class VariationInfoModalWindow extends Section {
         }
     }
 
-    public void savePictureVCF(String PathName) {
-        String name = TableRow.variationName;
+    public void savePictureVCF(String PathName, String variationName) {
         variationInfoWindow.selectTab(AnnotationsTabs.VISUALIZER);
-        //waitVisualizer("//*[@id='cnv']/div");
         String xPath = "'//*[@id=\"cnv\"]/canvas'";
         try {
-            savePicture(PathName, name, xPath);
+            savePicture(PathName, variationName, xPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void savePicture(String PathName, String name, String xPath) {
-        waitTrackLoading();
-        Timer.sleep(1000);
-        File[] goldenimagearray = new File(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images").listFiles();
-        String goldenimagestring = Arrays.toString(goldenimagearray).replace(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images\\", "").trim().toUpperCase();
-        if ((goldenimagestring.contains(name.toUpperCase() + ".PNG"))) {
-            getDriver().manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
-            String imgstring = null;
-            try {
-                imgstring = getJSExecutor().executeScript(("function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}; " +
-                        "return (getElementByXpath( " + xPath + " )).toDataURL('image/png').substring(22);")).toString();
-            } catch (Exception e) {
-                assertTrue(e.toString().isEmpty(), "JS execution error");
+    public void savePicture(String PathName, String name, String xPath) throws FileNotFoundException {
+        try (FileOutputStream fos = new FileOutputStream(new File(PathName + name + ".png"))) {
+            waitTrackLoading();
+            Timer.sleep(1000);
+            File[] goldenimagearray = new File(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images").listFiles();
+            String goldenimagestring = Arrays.toString(goldenimagearray).replace(TestBase.CurrentDir() + "\\src\\main\\resources\\golden_images\\", "").trim().toUpperCase();
+            if ((goldenimagestring.contains(name.toUpperCase() + ".PNG"))) {
+                getDriver().manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
+                String imgstring = null;
+                try {
+                    imgstring = getJSExecutor().executeScript(("function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}; " +
+                            "return (getElementByXpath( " + xPath + " )).toDataURL('image/png').substring(22);")).toString();
+                } catch (Exception e) {
+                    assertTrue(e.toString().isEmpty(), "JS execution error");
+                }
+                byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(imgstring);
+                    fos.write(imageBytes);
+                    fos.close();
+                comparisonData(TestBase.CurrentDir(), name);
             }
-            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(imgstring);
-            try {
-                FileOutputStream fos = new FileOutputStream(new File(PathName + name + ".png"));
-                fos.write(imageBytes);
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            comparisonData(TestBase.CurrentDir(), name);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            assertTrue(e.toString().isEmpty(), "Can't create file");
+        } catch (IOException e) {
+            e.printStackTrace();
+            assertTrue(e.toString().isEmpty(), "Can't create file");
         }
     }
 
@@ -124,14 +126,17 @@ public class VariationInfoModalWindow extends Section {
             ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", test);
             builder.redirectErrorStream(true);
             Process p = builder.start();
-            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));) {
-                String message = r.readLine();
+            String message= null;
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                message = r.readLine();
                 assertTrue(message.isEmpty(), message);
             } catch (Exception e) {
                 AssertionError fail;
+                assertTrue(e.toString().isEmpty(), message);
             }
         } catch (IOException e) {
             AssertionError fail;
+            assertTrue(e.toString().isEmpty(), "Can't execute perceptualdiff.exe");
         }
     }
 

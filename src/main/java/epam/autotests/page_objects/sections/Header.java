@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static epam.autotests.page_objects.site.NGB_Site.projectPage;
+import static org.testng.Assert.assertTrue;
 
 
 public class Header extends Section {
@@ -57,7 +58,6 @@ public class Header extends Section {
     private Menu<?> geneMenu;
 
     @FindBy(css = "button[aria-owns='menu_container_2']")
-//!!! IMPORTANT FOR NEW VERSION SHOULD BE 'menu_container_2' !!!
     private Button menuViewsBtn;
 
     @FindBy(xpath = ".//div[contains(@class, 'md-open-menu-container')]/md-menu-content[contains(@class,'ngb-tool-menu')]//md-menu-item")
@@ -103,8 +103,6 @@ public class Header extends Section {
         switch (page.getClass().getSimpleName()) {
             case "MainPage": {
                 checkList.add(searchInput.isDisplayed());
-                // checkList.add(() -> {return projectTitle.isDisplayed() ?
-                // false : true});
                 break;
             }
             case "ProjectPage": {
@@ -117,7 +115,7 @@ public class Header extends Section {
             default:
                 throw new IllegalArgumentException("Wrong class was transmitted");
         }
-        return checkList.contains(false) ? false : true;
+        return checkList.contains(false);
     }
 
     public void goToMainPage() {
@@ -137,14 +135,11 @@ public class Header extends Section {
         Timer.sleep(1500);
         Element menuItem = getViewMenuItem(viewsName);
         if (!isMenuItemChecked(menuItem)) {
-            try {
-                menuItem.clickCenter();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            return;
+
+            menuItem.clickCenter();
         }
-        menuViewsBtn.clickCenter();
+        else
+            menuViewsBtn.clickCenter();
     }
 
     private boolean isMenuItemChecked(Element viewsMenuItem) {
@@ -159,12 +154,7 @@ public class Header extends Section {
         menuViewsBtn.clickCenter();
         Element menuItem = getViewMenuItem(viewsName);
         if (isMenuItemChecked(menuItem)) {
-            try {
-                menuItem.clickCenter();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            return;
+            menuItem.clickCenter();
         }
     }
 
@@ -183,14 +173,16 @@ public class Header extends Section {
 
 
     public boolean isChromosomeSelected() {
-        return !projectPage.browserPanel.getChrTitle().equals("NONE");
+        return projectPage.browserPanel.getChrTitle().equals("NONE");
     }
 
     public void resetChSelection() {
-        String Chromosome = "NONE";
-        projectPage.browserPanel.ChrMenu().click();
-        chromosomeChooser.sendKeys(Keys.LEFT_CONTROL + "a" + Chromosome);
-        chromosomeMenu.select(Chromosome);
+        if (isChromosomeSelected()) {
+            String Chromosome = "NONE";
+            projectPage.browserPanel.ChrMenu().click();
+            chromosomeChooser.sendKeys(Keys.LEFT_CONTROL + "a" + Chromosome);
+            chromosomeMenu.select(Chromosome);
+        }
     }
 
     public void chooseBookmark(String string) {

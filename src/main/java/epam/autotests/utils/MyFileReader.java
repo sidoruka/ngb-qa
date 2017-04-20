@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.assertTrue;
+
 
 public class MyFileReader {
 
@@ -28,11 +30,11 @@ public class MyFileReader {
                     result.add(collectValues(indexes, lineItems));
                 }
             }
-            br.close();
             return result;
 
         } catch (IOException e) {
             e.printStackTrace();
+            assertTrue(e.toString().isEmpty(), "Can't external file");
         }
         return null;
     }
@@ -62,8 +64,7 @@ public class MyFileReader {
     }
 
     public static int countLines(File file) throws IOException {
-        InputStream is = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
-        try {
+        try (InputStream is = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()))) {
             byte[] c = new byte[1024];
             int count = 0;
             int readChars = 0;
@@ -77,8 +78,6 @@ public class MyFileReader {
                 }
             }
             return (count == 0 && !empty) ? 1 : count;
-        } finally {
-            is.close();
         }
     }
 }

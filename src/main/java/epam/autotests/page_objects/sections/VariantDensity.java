@@ -20,7 +20,7 @@ public class VariantDensity extends Section {
     private List<Element> usedChromosome;
 
     @FindBy(css = "ngb-variant-density-diagram g>g>rect")
-    private Elements<Element> bar;
+    private static Elements<Element> bar;
 
     public int getNumberChromosome() {
         return usedChromosome.size();
@@ -35,7 +35,7 @@ public class VariantDensity extends Section {
         return Integer.valueOf(weight.get(idx).getWebElement().getText());
     }
 
-    public void selectChromosome(int ix) {
+    public static void selectChromosome(int ix) {
         bar.get(ix).clickCenter();
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Vsevolod_Adrianov on 7/18/2016.
  */
-public class PropertyVCF extends Section {
+public class propertyVCF extends Section {
     @FindBy(css = ".md-variant-property-single-value")
     private List<Element> pValue;
 
@@ -21,19 +21,15 @@ public class PropertyVCF extends Section {
     private Element pict;
 
 
-    public PropertyVCF() {
-    }
-
-    //
-    public void SelectGeneFile(int ix) {
+    public void selectGeneFile(int ix) {
         listGeneFiles.select(ix);
     }
 
-    public boolean IsLoadedProperties() {
+    public boolean isLoadedProperties() {
         return pValue.isEmpty();
     }
 
-    public void WaitPict() {
+    public void waitPict() {
         pict.waitDisplayed();
     }
 }

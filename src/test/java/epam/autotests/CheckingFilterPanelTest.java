@@ -6,11 +6,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
 import static epam.autotests.page_objects.enums.FiltersGroups.GENE;
 import static epam.autotests.page_objects.enums.FiltersGroups.TYPE_VARIANT;
-import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_DATASETS_PANEL;
-import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_VARIANTS_PANEL;
 import static epam.autotests.page_objects.enums.Views.RESTORE_DEFAULT;
 import static epam.autotests.page_objects.enums.Views.VARIANTS;
 import static epam.autotests.page_objects.site.NGB_Site.mainPage;
@@ -23,11 +20,10 @@ public class CheckingFilterPanelTest extends TestBase {
     public void preparations() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
-        isInState(OPEN_DATASETS_PANEL);
-        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf");
-        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf");
-        mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes");
-        isInState(OPEN_VARIANTS_PANEL);
+        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf", true);
+        mainPage.datasetsPanel.select("/SV_Sample2/sample_2-lumpy.vcf", true);
+//        mainPage.datasetsPanel.select("/SV_Sample1/GRCh38_Genes", true);
+        projectPage.openPanel(VARIANTS);
         System.out.println("=== CheckingFilterPanelTest.preparation(); @BeforeClass");
     }
 
@@ -36,17 +32,13 @@ public class CheckingFilterPanelTest extends TestBase {
         //#10.5
         projectPage.openFilter();
         projectPage.filterPanel.selectFilter(TYPE_VARIANT, "INV");
-        isInState(OPEN_VARIANTS_PANEL);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("INV"));
         projectPage.openFilter();
         projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DEL");
-        isInState(OPEN_VARIANTS_PANEL);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DEL"));
         projectPage.filterPanel.selectFilter(TYPE_VARIANT, "BND");
-        isInState(OPEN_VARIANTS_PANEL);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("BND"));
         projectPage.filterPanel.selectFilter(TYPE_VARIANT, "DUP");
-        isInState(OPEN_VARIANTS_PANEL);
         Assert.isTrue(projectPage.variantsPanel.variantsTable.isColumnContainOnlyOneValue("DUP"));
         projectPage.filterPanel.clearFilterPanel();
         System.out.println("=== CheckingFilterPanelTest.checkingTypeOfVarGroup(); @Test(priority=1)");
@@ -56,12 +48,10 @@ public class CheckingFilterPanelTest extends TestBase {
     public void checkGeneGroup() {
         projectPage.openFilter();
         projectPage.filterPanel.selectFilter(GENE, "EML4");
-        projectPage.openPanel(VARIANTS);
         projectPage.variantsPanel.checkVarGenes("EML4");
         projectPage.filterPanel.deleteAllAddedGenes();
         projectPage.openFilter();
         projectPage.filterPanel.selectFilter(GENE, "BCOR");
-        projectPage.openPanel(VARIANTS);
         projectPage.variantsPanel.checkVarGenes("BCOR");
         projectPage.filterPanel.deleteAllAddedGenes();
         projectPage.openFilter();

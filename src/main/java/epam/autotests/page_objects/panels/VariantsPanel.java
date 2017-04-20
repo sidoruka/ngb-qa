@@ -4,7 +4,7 @@ import com.epam.commons.Timer;
 import com.epam.jdi.uitests.web.selenium.elements.common.Button;
 import com.epam.web.matcher.junit.Assert;
 import epam.autotests.page_objects.general.Panel;
-import epam.autotests.page_objects.general.PropertyVCF;
+import epam.autotests.page_objects.general.propertyVCF;
 import epam.autotests.page_objects.sections.CustomTable;
 import epam.autotests.page_objects.sections.GridPanel;
 import org.openqa.selenium.By;
@@ -19,6 +19,7 @@ import java.util.List;
 
 import static epam.autotests.page_objects.site.NGB_Site.compareTwoStringLists;
 import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by Vsevolod_Adrianov on 8/8/2016.
@@ -28,7 +29,7 @@ import static epam.autotests.page_objects.site.NGB_Site.variationInfoWindow;
 
 public class VariantsPanel extends Panel {
     @FindBy(css = ".md-transition-in")
-    private PropertyVCF VCFPanel;
+    private propertyVCF VCFPanel;
 
     @FindBy(xpath = ".//ngb-columns//button")
     private Button addColumns;
@@ -58,9 +59,9 @@ public class VariantsPanel extends Panel {
 
     public void visualizerVCF(int row) {
         gridPanel.cell(row, 4).click();
-        VCFPanel.SelectGeneFile(2);
+        VCFPanel.selectGeneFile(2);
         Timer.sleep(2000);
-        VCFPanel.WaitPict();
+        VCFPanel.waitPict();
         WebElement pWnd = getDriver().findElement(By.cssSelector(".md-transition-in"));
         pWnd.sendKeys(Keys.ESCAPE);
     }
@@ -68,7 +69,6 @@ public class VariantsPanel extends Panel {
     public void scanVCFPanels() {
         int N = gridPanel.getNumRows();
         int M = gridPanel.getNumCols();
-        String[] ss = new String[M];
         for (int i = 0; i < N; i = i + M) {
             gridPanel.cell(i, 2).click();
             visualizerVCF(i);
@@ -94,7 +94,6 @@ public class VariantsPanel extends Panel {
 
     public void checkVarGenes(String... genes) {
         List<String> valuesFromTable;
-        List<String> expectedValues = Arrays.asList(genes);
         List<Boolean> boolList = new ArrayList<>();
         for (int i = 0; i < variantsTable.tableRows.size(); i++) {
             valuesFromTable = Arrays.asList(variantsTable.tableRows.get(i).getRowValue(variantsTable.getColumnIndex("Gene")).replaceAll("\\s", "").split(","));
@@ -111,6 +110,7 @@ public class VariantsPanel extends Panel {
             variantsTable.collectAllPictData(ProjectDir);
         } catch (Exception e) {
             e.printStackTrace();
+            assertTrue(e.toString().isEmpty(), "Can't take picture");
         }
     }
 }

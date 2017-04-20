@@ -7,6 +7,7 @@ import com.epam.jdi.uitests.web.selenium.elements.complex.TextList;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
 import epam.autotests.page_objects.enums.SortingTypes;
 import epam.autotests.page_objects.enums.VarTableColumns;
+import epam.autotests.utils.TestBase;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +18,6 @@ import java.util.List;
 
 import static epam.autotests.page_objects.site.NGB_Site.confirmWindow;
 import static epam.autotests.page_objects.site.NGB_Site.isListSorted;
-import static epam.autotests.utils.TestBase.compareListOfArrays;
 
 public class CustomTable extends Section {
 
@@ -115,13 +115,9 @@ public class CustomTable extends Section {
     }
 
     public Boolean isColumnSorted(VarTableColumns colName, boolean isNumeric, boolean ascending) {
-        return isListSorted(collectColumnValues(colName.value, isNumeric), ascending);
+        return isListSorted(collectColumnValues(colName.toString(), isNumeric), ascending);
     }
-
-    public void scrollTo(int rowNumber) {
-        Actions action = new Actions(getDriver());
-
-    }
+    
 
     private int getCountOfVisibleRows() {
         int counter = 0;
@@ -146,12 +142,12 @@ public class CustomTable extends Section {
      */
     public void setSorting(VarTableColumns colName, SortingTypes type) {
         if (!isColumnPresent(colName.value))
-            throw new NoSuchElementException("[ColumnSorting]:Column '" + colName.value + "' not found.");
+            throw new NoSuchElementException("[ColumnSorting]:Column '" + colName + "' not found.");
         else {
             for (int i = 0; i < columns.size(); i++) {
-                if (columns.get(i).getColumnName().equals(colName.value)) {
+                if (columns.get(i).getColumnName().equals(colName)) {
                     for (int j = 0; j < 3; j++) {
-                        if (!columns.get(i).getSortingType().equals(type.value)) {
+                        if (!columns.get(i).getSortingType().equals(type)) {
                             columns.get(i).click();
                         } else
                             break;
@@ -200,7 +196,7 @@ public class CustomTable extends Section {
         List<String[]> list2 = new ArrayList<>();
         List<String[]> currentList = collectAllRowData(0, 1, 3, 4);
         int countOfVisibleRows = tableRows.size();
-        while (!compareListOfArrays(list2, currentList)) {
+        while (!TestBase.compareListOfArrays(list2, currentList)) {
             list2 = currentList;
             for (String[] item : currentList) {
                 if (!itemsFromChart.contains(item))
@@ -212,15 +208,7 @@ public class CustomTable extends Section {
         return itemsFromChart;
     }
 
-    public int getCountOfRowsOverall() {
-        int count = 0;
-        List<String> rowData = new ArrayList<>();
-
-
-        return count;
-    }
-
-    public boolean isColumnContainOnlyOneValue(String value) {
+        public boolean isColumnContainOnlyOneValue(String value) {
         for (int i = 0; i < tableRows.size(); i++) {
             if (!tableRows.get(i).getRowValue(0).equals(value))
                 return false;

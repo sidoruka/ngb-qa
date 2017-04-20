@@ -20,13 +20,9 @@ public class CheckingMainPageTest extends TestBase {
         isInState(OPEN_SETTING);
         if (settingWindow.isDisplayed()) {
             settingWindow.openTab(ALIGNMENTS);
-            Timer.sleep(5000);
             settingWindow.openTab(GFF_GTF);
-            Timer.sleep(5000);
             settingWindow.openTab(CUSTOMIZE);
-            Timer.sleep(5000);
             settingWindow.openTab(GENERAL);
-            Timer.sleep(5000);
             settingWindow.close();
         }
         System.out.println("=== CheckingMainPageTest.checkingDataPresence(); @Test(priority=0)");
@@ -34,8 +30,6 @@ public class CheckingMainPageTest extends TestBase {
 
     @AfterClass(alwaysRun = true)
     public void resetBrowser() {
-        projectPage.closeAllTracks();
-        Timer.sleep(1000);
         projectPage.openPanel(RESTORE_DEFAULT);
         System.out.println("=== CheckingMainPageTest.resetBrowser(); @AfterClass(alwaysRun=true)");
     }

@@ -20,10 +20,11 @@ public class SessionsPanel extends Panel {
     public CustomTable bookmarksTable;
 
     public void deleteBookmarks(String... bookmark1) {
-        for (String bookmark : bookmark1) {
-            bookmarksTable.deleteRecord(bookmark, true);
+        if (bookmarksTable.tableRows.size() == 0) {
+            for (String bookmark : bookmark1) {
+                bookmarksTable.deleteRecord(bookmark, true);
+            }
         }
-        Timer.sleep(1000);
     }
 
     public void deleteBookmarkWithoutConfirmation(String bookmark) {

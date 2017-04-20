@@ -25,7 +25,7 @@ public class DatasetsPanel extends Panel {
     @FindBy(xpath = ".//md-virtual-repeat-container//input")
     private CheckBox checkBox;
 
-    public boolean checkBoxIsSelected() {
+    public boolean isBoxSelected() {
         return dsTree.isSelected();
     }
 
@@ -36,7 +36,7 @@ public class DatasetsPanel extends Panel {
         searchTextField.sendKeys(nameProj);
     }
 
-    public void select(String DataName) {
+    public void select(String DataName, boolean select) {
         Path p = Paths.get(DataName);
         String file = p.getFileName().toString();
         String pp = p.toString();
@@ -47,95 +47,10 @@ public class DatasetsPanel extends Panel {
             if (file.equals(retval) && node != null) {
                 // Check file
                 node = dsTree.getBy(retval);
-                node.Check();
-            } else {
-                if (!retval.isEmpty()) {
-                    if (i < 2) {
-                        node = dsTree.getBy(retval);
-                    } else {
-                        node = dsTree.getBy(retval);
-                    }
-                    node.OpenToggle();
-                }
-            }
-            System.out.println("[" + i + "] " + retval);
-            i++;
-        }
-    }
-
-    public void loadDatasets(String DataName) {
-        Path p = Paths.get(DataName);
-        String file = p.getFileName().toString();
-        String pp = p.toString();
-        System.out.println("path> <" + pp + ">");
-        Node node = null;
-        int i = 0;
-        boolean Checked = false;
-        for (String retval : DataName.split("/")) {
-            if (file.equals(retval) && node != null) {
-                node = node.inTree.getBy(retval);
-                node.Check();
-                Checked = true;
-            } else {
-                if (!retval.isEmpty()) {
-                    if (i < 2) {
-                        node = dsTree.getBy(retval);
-                    } else {
-                        node = dsTree.getBy(retval);
-                    }
-                    node.OpenToggle();
-                }
-            }
-            System.out.println("[" + i + "] " + retval);
-            i++;
-        }
-        if (!Checked && node != null) {
-            node.Check();
-        }
-    }
-
-    public void unloadDatasets(String DataName) {
-        Path p = Paths.get(DataName);
-        String file = p.getFileName().toString();
-        String pp = p.toString();
-        System.out.println("path> <" + pp + ">");
-        Node node = null;
-        int i = 0;
-        boolean Checked = false;
-        for (String retval : DataName.split("/")) {
-            if (file.equals(retval) && node != null) {
-                node = node.inTree.getBy(retval);
-                node.unCheck();
-                Checked = true;
-            } else {
-                if (!retval.isEmpty()) {
-                    if (i < 2) {
-                        node = dsTree.getBy(retval);
-                    } else {
-                        node = dsTree.getBy(retval);
-                    }
-                    node.OpenToggle();
-                }
-            }
-            System.out.println("[" + i + "] " + retval);
-            i++;
-        }
-        if (!Checked && node != null) {
-            node.unCheck();
-        }
-    }
-
-    public void unSelect(String DataName) {
-        Path p = Paths.get(DataName);
-        String file = p.getFileName().toString();
-        String pp = p.toString();
-        System.out.println("path> <" + pp + ">");
-        Node node = null;
-        int i = 0;
-        for (String retval : DataName.split("/")) {
-            if (file.equals(retval) && node != null) {
-                node = dsTree.getBy(retval);
-                node.unCheck();
+                if (select)
+                    node.Check();
+                else
+                    node.unCheck();
             } else {
                 if (!retval.isEmpty()) {
                     if (i < 2) {

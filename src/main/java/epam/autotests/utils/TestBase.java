@@ -22,7 +22,7 @@ import static epam.autotests.page_objects.site.NGB_Site.mainPage;
 public abstract class TestBase extends TestNGBase {
 
     @BeforeSuite(alwaysRun = true)
-    public static void setUp() {
+    public void setUp() {
         try {
             if (PropertyReader.getProperty("run.type").toUpperCase().contains("REMOTE")) {
                 WebSettings.useDriver(() -> mainPage.remoteDriver());
@@ -35,14 +35,14 @@ public abstract class TestBase extends TestNGBase {
         logger.info("Run Tests");
     }
 
-    public static boolean isExpressionMatched(String string) {
+    public boolean isExpressionMatched(String string) {
         Pattern pattern = Pattern.compile("(\\/?\\w*)$");
         Matcher matcher = pattern.matcher(string);
         return matcher.find();
     }
 
     @AfterSuite(alwaysRun = true)
-    public static void killDriver() {
+    public void killDriver() {
         WebSettings.getDriver().quit();
     }
 
