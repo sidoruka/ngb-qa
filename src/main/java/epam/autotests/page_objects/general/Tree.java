@@ -15,9 +15,8 @@ public class Tree extends Section {
 
     public Node getBy(String name) {
         for (int i = 0; i < Nodes(); i++)
-            if (dataset.get(i).getToggleLabel().getText().contains(name))
+            if (dataset.get(i).getToggleLabel().getText().toUpperCase().contains(name.toUpperCase()))
                 return dataset.get(i);
-//            else
         return null;
     }
 

@@ -1,28 +1,22 @@
 package epam.autotests;
 
-import epam.autotests.page_objects.sections.VariationInfoModalWindow;
 import epam.autotests.utils.TestBase;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
-import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_DATASETS_PANEL;
 import static epam.autotests.page_objects.enums.Views.RESTORE_DEFAULT;
 import static epam.autotests.page_objects.site.NGB_Site.*;
 
 
 public class CheckingTrackGene extends TestBase {
-    String refPath = CurrentDir() + "\\target\\";
-    String xPath = "'/html/body/ui-view/div/div[2]/ngb-golden-layout/div/div/div/div[1]/div[2]/div/div/ngb-browser/ngb-tracks-view/div/div/div[2]/ngb-track[2]/div/div[3]/div/canvas'";
 
     @BeforeClass
     public void preparations() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
         mainPage.datasetsPanel.select("/SV_Sample1", true);
-        VariationInfoModalWindow.waitVisualizer(xPath);
         System.out.println("=== CheckingTrackGene.preparation(); @BeforeClass");
     }
 

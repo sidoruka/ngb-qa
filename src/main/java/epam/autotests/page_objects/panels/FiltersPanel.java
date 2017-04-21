@@ -16,7 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static epam.autotests.page_objects.enums.FiltersGroups.*;
+import static epam.autotests.page_objects.enums.Views.BROWSER;
+import static epam.autotests.page_objects.enums.Views.VARIANTS;
 import static epam.autotests.page_objects.site.NGB_Site.emptySpace;
+import static epam.autotests.page_objects.site.NGB_Site.projectPage;
 
 
 public class FiltersPanel extends VariantsPanel {
@@ -61,17 +64,16 @@ public class FiltersPanel extends VariantsPanel {
             emptySpace.clickCenter();
     }
 
-    private Element getGroup(String groupName) {
-        for (Element filterGroup : collapsibleSections) {
-            if (filterGroup.getAttribute("textContent").trim().equals(groupName))
-                return filterGroup;
-        }
-        return null;
+    public void closeFilter() {
+        variantsHamburger.click();
+        if (!filterCheckBox.getAttribute("aria-checked").toUpperCase().contains("FALSE")) {
+            filterCheckBox.clickCenter();
+            emptySpace.clickCenter();
+        } else
+            emptySpace.clickCenter();
     }
 
-    public int getCountOfSelectedFilters() {
-        return this.getList(By.xpath(".//md-checkbox[@aria-checked = 'true']")).size();
-    }
+
 
     public int getSizeActiveVCFFile() {
         return activeVCFFilesGroup.getNumberChecks();
@@ -107,23 +109,6 @@ public class FiltersPanel extends VariantsPanel {
                 }
             }
         }
-    }
-
-    public boolean compareFiltersGroups() {
-        String[] defaultListOfGroups = new String[]{"GENE", "TYPE OF VARIANT", "VARIANT LOCATION"};
-        List<String> actualListOfGroups = new ArrayList<>();
-        for (Element filterGroup : collapsibleSections) {
-            actualListOfGroups.add(filterGroup.getWebElement().getText());
-        }
-        return actualListOfGroups.equals(Arrays.asList(defaultListOfGroups));
-    }
-
-    public boolean isFileSelected(String... files) {
-        for (String fileName : files) {
-            if (!activeVCFFilesGroup.isOptionSelected(fileName))
-                return false;
-        }
-        return true;
     }
 
     public void selectGene(String geneName) {

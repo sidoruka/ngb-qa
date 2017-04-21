@@ -1,6 +1,5 @@
 package epam.autotests;
 
-import com.epam.commons.Timer;
 import epam.autotests.utils.TestBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;

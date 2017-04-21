@@ -5,6 +5,7 @@ import com.epam.jdi.uitests.web.selenium.elements.base.Element;
 import com.epam.jdi.uitests.web.selenium.elements.complex.Elements;
 import com.epam.jdi.uitests.web.selenium.elements.complex.TextList;
 import com.epam.jdi.uitests.web.selenium.elements.composite.Section;
+import com.epam.web.matcher.junit.Assert;
 import epam.autotests.page_objects.enums.SortingTypes;
 import epam.autotests.page_objects.enums.VarTableColumns;
 import epam.autotests.utils.TestBase;
@@ -207,13 +208,30 @@ public class CustomTable extends Section {
         }
         return itemsFromChart;
     }
-
-        public boolean isColumnContainOnlyOneValue(String value) {
-        for (int i = 0; i < tableRows.size(); i++) {
-            if (!tableRows.get(i).getRowValue(0).equals(value))
-                return false;
-        }
-        return true;
+        public void checkVarVariationType(String... variation) {
+            List<String> valuesFromTable;
+            List<Boolean> boolList = new ArrayList<>();
+            for (int i = 0; i < tableRows.size(); i++) {
+                valuesFromTable = Arrays.asList(tableRows.get(i).getRowValue(0));
+                for (int j = 0; j < variation.length; j++) {
+                    boolList.add(valuesFromTable.contains(variation[j]));
+                }
+                Assert.isTrue(boolList.contains(true), "There is no required variations among values from table: " + valuesFromTable.toString());
+                boolList.clear();
+            }
+//        if (tableRows.isEmpty())
+//            return true;
+//        StringBuilder buffer = new StringBuilder();
+//        if (variation.length>1) {
+//            for (int i = 0; i < variation.length; i++)
+//                buffer.append(variation[i]);
+//        }
+//        else buffer.append(variation[0]);
+//        for (int i = 0; i < tableRows.size(); i++) {
+//            if (!buffer.toString().contains(tableRows.get(i).getRowValue(0)))
+//                return false;
+//        }
+//        return true;
     }
 
     public Element getRow(int iX) {

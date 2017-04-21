@@ -44,7 +44,7 @@ public class DatasetsPanel extends Panel {
         Node node = null;
         int i = 0;
         for (String retval : DataName.split("/")) {
-            if (file.equals(retval) && node != null) {
+            if (file.equalsIgnoreCase(retval) && node != null) {
                 // Check file
                 node = dsTree.getBy(retval);
                 if (select)

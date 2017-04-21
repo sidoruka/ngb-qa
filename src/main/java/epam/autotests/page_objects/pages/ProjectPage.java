@@ -122,6 +122,11 @@ public class ProjectPage extends WebPage {
         filterPanel.openFilter();
     }
 
+    public void closeFilter() {
+        projectPage.openPanel(VARIANTS);
+        filterPanel.closeFilter();
+    }
+
 
     public void setBookmark(String bkmrk) {
         sessionBtn.clickCenter();
