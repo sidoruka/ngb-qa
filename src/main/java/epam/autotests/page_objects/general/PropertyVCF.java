@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Vsevolod_Adrianov on 7/18/2016.
  */
-public class propertyVCF extends Section {
+public class PropertyVCF extends Section {
     @FindBy(css = ".md-variant-property-single-value")
     private List<Element> pValue;
 

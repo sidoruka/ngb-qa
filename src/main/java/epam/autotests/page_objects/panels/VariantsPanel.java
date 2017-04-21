@@ -4,7 +4,7 @@ import com.epam.commons.Timer;
 import com.epam.jdi.uitests.web.selenium.elements.common.Button;
 import com.epam.web.matcher.junit.Assert;
 import epam.autotests.page_objects.general.Panel;
-import epam.autotests.page_objects.general.propertyVCF;
+import epam.autotests.page_objects.general.PropertyVCF;
 import epam.autotests.page_objects.sections.CustomTable;
 import epam.autotests.page_objects.sections.GridPanel;
 import org.openqa.selenium.By;
@@ -29,7 +29,7 @@ import static org.testng.Assert.assertTrue;
 
 public class VariantsPanel extends Panel {
     @FindBy(css = ".md-transition-in")
-    private propertyVCF VCFPanel;
+    private PropertyVCF VCFPanel;
 
     @FindBy(xpath = ".//ngb-columns//button")
     private Button addColumns;

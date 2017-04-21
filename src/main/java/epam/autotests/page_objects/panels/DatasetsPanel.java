@@ -58,7 +58,10 @@ public class DatasetsPanel extends Panel {
                     } else {
                         node = dsTree.getBy(retval);
                     }
-                    node.OpenToggle();
+                    if (DataName.split("/").length==2)
+                        node.Check();
+                    else
+                        node.OpenToggle();
                 }
             }
             System.out.println("[" + i + "] " + retval);

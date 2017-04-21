@@ -1,8 +1,10 @@
 package epam.autotests;
 
+import com.epam.commons.Timer;
 import com.epam.web.matcher.testng.Assert;
 import epam.autotests.page_objects.sections.Header;
 import epam.autotests.page_objects.sections.VariantDensity;
+import epam.autotests.page_objects.sections.VariationInfoModalWindow;
 import epam.autotests.utils.TestBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -25,7 +27,7 @@ public class CheckingSessionsPanelTest extends TestBase {
     public void preparation() {
         projectPage.closeAllTracks();
         projectPage.openPanel(RESTORE_DEFAULT);
-        mainPage.datasetsPanel.select("/SV_Sample1/sample_1-lumpy.vcf", true);
+        mainPage.datasetsPanel.select("/SV_Sample1", true);
         projectPage.openPanel(SESSIONS);
         System.out.println("=== CheckingSessionsPanelTest.preparation(); @BeforeClass");
     }
@@ -33,11 +35,11 @@ public class CheckingSessionsPanelTest extends TestBase {
     @Test(priority = 0)
     public void TestBookmarkCreation() {
         header.chooseChromosome("17");
-        projectPage.browserPanel.decreaseZoom(3);
+        projectPage.browserPanel.decreaseZoom(4);
         projectPage.addBookmark(bookmark1);
         projectPage.checkViewAfterAddition();
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
-        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "2");
+        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "17");
         System.out.println("=== CheckingSessionsPanelTest.TestBookmarkCreation(); @Test(priority=0)");
     }
 
@@ -47,10 +49,12 @@ public class CheckingSessionsPanelTest extends TestBase {
         projectPage.openPanel(RESTORE_DEFAULT);
         projectPage.openPanel(SESSIONS);
         projectPage.sessionsPanel.chooseBookmark(bookmark1);
+        Timer.sleep(1000);
         projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "17");
         projectPage.sessionsPanel.deleteBookmarkWithoutConfirmation(bookmark1);
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
         projectPage.sessionsPanel.deleteBookmarks(bookmark1);
+        Timer.sleep(1000);
         Assert.isFalse(projectPage.sessionsPanel.isThereAddedBookmarks(bookmark1), "There are remained bookmarks added during the test in the table");
         System.out.println("=== CheckingSessionsPanelTest.TestUsingCreatedBookmark(); @Test(priority=1)");
     }

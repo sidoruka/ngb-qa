@@ -136,7 +136,7 @@ public class ProjectPage extends WebPage {
     }
 
     public void checkViewAfterAddition() {
-//        Timer.sleep(1000);
+        Timer.sleep(1000);
         com.epam.web.matcher.junit.Assert.isTrue(sessionBtn.getAttribute("class").contains("success-save"), "Bookmark sign isn't green");
         com.epam.web.matcher.junit.Assert.isFalse(sessionTextField.isDisplayed(), "Text field for bookmark's name is still displayed");
     }
@@ -239,7 +239,6 @@ public class ProjectPage extends WebPage {
 
     public void checkingViewOfBookmarksAndBrowser(String bookmarkName, String chromosome) {
         SoftAssert soft_assert = new SoftAssert();
-
         String[] bmParams = sessionsPanel.bookmarksTable.findRow("Name", bookmarkName).collectRowData2(1, 2, 3);
         String[] tabParams = new String[3];
         tabParams[0] = browserPanel.getTabTitle().replaceAll("(CHR:)|(\\n\\d+)", "");

@@ -67,7 +67,7 @@ public class VariationInfoModalWindow extends Section {
         }
     }
 
-    public void waitTrackLoading() {
+    public static void waitTrackLoading() {
         WebDriverWait wait = new WebDriverWait(WebSettings.getDriver(), 60);
         try {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//md-progress-circular")));//(".//ngb-track//div[@class='ng-hide']")));
