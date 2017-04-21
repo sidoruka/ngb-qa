@@ -163,7 +163,7 @@
 				<run.type>REMOTE</run.type>
 				<os>macOS 10.12</os>
 				<browser.version>10.0</browser.version>
-				<screen.resolution>1280x1024</screen.resolution>
+				<screen.resolution>'1280x960</screen.resolution>
 			</properties>
 		</profile>
 	</profiles>
