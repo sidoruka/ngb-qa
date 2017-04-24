@@ -73,7 +73,7 @@ public class VariationInfoModalWindow extends Section {
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(".//md-progress-circular")));//(".//ngb-track//div[@class='ng-hide']")));
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.isFalse(e.toString().isEmpty(), "Couldn't load loader");
+            Assert.isFalse(e.toString().isEmpty(), "Couldn't load tracks");
         }
     }
 

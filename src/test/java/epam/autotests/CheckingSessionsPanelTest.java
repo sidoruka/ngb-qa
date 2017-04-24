@@ -27,12 +27,12 @@ public class CheckingSessionsPanelTest extends TestBase {
 
     @Test(priority = 0)
     public void TestBookmarkCreation() {
-        header.chooseChromosome("17");
-        projectPage.browserPanel.decreaseZoom(4);
+        header.chooseCoordinates("17: 76304077 - 76304122");  //chooseChromosome("17");
+      //  projectPage.browserPanel.decreaseZoom(4);
         projectPage.addBookmark(bookmark1);
         projectPage.checkViewAfterAddition();
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
-        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "17");
+        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1);
         System.out.println("=== CheckingSessionsPanelTest.TestBookmarkCreation(); @Test(priority=0)");
     }
 
@@ -42,7 +42,7 @@ public class CheckingSessionsPanelTest extends TestBase {
         projectPage.openPanel(RESTORE_DEFAULT);
         projectPage.openPanel(SESSIONS);
         projectPage.sessionsPanel.chooseBookmark(bookmark1);
-        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1, "17");
+        projectPage.checkingViewOfBookmarksAndBrowser(bookmark1);
         projectPage.sessionsPanel.deleteBookmarkWithoutConfirmation(bookmark1);
         projectPage.sessionsPanel.isThereRequiredBookmark(bookmark1);
         projectPage.sessionsPanel.deleteBookmarks(bookmark1);

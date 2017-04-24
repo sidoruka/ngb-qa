@@ -9,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.Arrays;
 
+import static epam.autotests.page_objects.sections.VariationInfoModalWindow.waitTrackLoading;
+
 /**
  * @author Oleg Aksenov
  *         <br>Created in October, 2016</br>
@@ -47,6 +49,7 @@ public class SessionsPanel extends Panel {
 
     public void chooseBookmark(String bookmark1) {
         bookmarksTable.findRow("Name", bookmark1).clickCenter();
+        waitTrackLoading();
     }
 
 }

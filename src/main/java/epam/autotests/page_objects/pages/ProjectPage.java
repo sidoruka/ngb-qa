@@ -18,16 +18,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.testng.asserts.SoftAssert;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.epam.jdi.uitests.core.preconditions.PreconditionsState.isInState;
-import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_DATASETS_PANEL;
-import static epam.autotests.page_objects.enums.ProjectPagePreconditions.OPEN_VARIANTS_PANEL;
 import static epam.autotests.page_objects.enums.Views.*;
 import static epam.autotests.page_objects.site.NGB_Site.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 /**
  * Created by Vsevolod_Adrianov on 7/8/2016.
@@ -133,11 +131,52 @@ public class ProjectPage extends WebPage {
         sessionTextField.sendKeys(bkmrk + Keys.ENTER);
     }
 
+    public void moveMouse(Point p) {
+        GraphicsEnvironment ge =
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+
+        // Search the devices for the one that draws the specified point.
+        for (GraphicsDevice device: gs) {
+            GraphicsConfiguration[] configurations =
+                    device.getConfigurations();
+            for (GraphicsConfiguration config: configurations) {
+                Rectangle bounds = config.getBounds();
+                if(bounds.contains(p)) {
+                    // Set point to screen coordinates.
+                    Point b = bounds.getLocation();
+                    Point s = new Point(p.x - b.x, p.y - b.y);
+
+                    try {
+                        Robot r = new Robot(device);
+                        r.mouseMove(s.x, s.y);
+                    } catch (AWTException e) {
+                        e.printStackTrace();
+                    }
+
+                    return;
+                }
+            }
+        }
+        // Couldn't move to the point, it may be off screen.
+        return;
+    }
+
+
     public void addBookmark(String bookmarkName) {
         sessionBtn.click();
 //        Timer.sleep(1000);
         sessionTextField.focus();
-        sessionTextField.sendKeys(bookmarkName + Keys.ENTER);
+        sessionTextField.sendKeys(bookmarkName+"\n");
+        //workaround for firefox webdriver
+        try {
+            Robot r = new Robot();
+            sessionTextField.focus();
+            r.keyPress(10);
+            r.keyRelease(10);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     public void checkViewAfterAddition() {
@@ -242,17 +281,14 @@ public class ProjectPage extends WebPage {
         Assert.isTrue(tracksList.get(tracksList.size() - 1).equalsIgnoreCase(trackTitle), "Wrong last track");
     }
 
-    public void checkingViewOfBookmarksAndBrowser(String bookmarkName, String chromosome) {
-        SoftAssert soft_assert = new SoftAssert();
+    public void checkingViewOfBookmarksAndBrowser(String bookmarkName) {
         String[] bmParams = sessionsPanel.bookmarksTable.findRow("Name", bookmarkName).collectRowData2(1, 2, 3);
         String[] tabParams = new String[3];
         tabParams[0] = browserPanel.getTabTitle().replaceAll("(CHR:)|(\\n\\d+)", "");
         tabParams[1] = browserPanel.CoordMenu().getText().replaceAll("(\\w+:\\s)|(\\s-\\s\\d+)", "");
         tabParams[2] = browserPanel.CoordMenu().getText().replaceAll("\\d+\\:\\s\\d+\\s-\\s", "");
-
-        soft_assert.assertTrue(bmParams[0].equals(tabParams[0]), "Wrong chromosome");
-        soft_assert.assertTrue(bmParams[1].equals(tabParams[1]), "Wrong left coordinate");
-        soft_assert.assertTrue(bmParams[2].equals(tabParams[2]), "Wrong right coordinate");
-        soft_assert.assertAll();
+        assertTrue(bmParams[0].equals(tabParams[0]), "Wrong chromosome");
+        assertTrue(bmParams[1].equals(tabParams[1]), "Wrong left coordinate");
+        assertTrue(bmParams[2].equals(tabParams[2]), "Wrong right coordinate");
     }
 }
