@@ -5,4 +5,3 @@ os:
 dist: trusty
 script: 
 - mvn clean test -P chrome_opensource -e 
-- mvn clean test -P firefox_opensource -e
