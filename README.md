@@ -1,5 +1,6 @@
 # Prerequisites
 * Operating system: Microsoft Windows 8.1, 10
+* Downolad and install [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * Download and install [maven](http://maven.apache.org/install.html)
 * Download and install [Google Chrome](https://www.google.com/chrome/browser/desktop/index.html)
 * Download and install [Mozila Firefox](https://www.mozilla.org/ru/firefox/new/)
