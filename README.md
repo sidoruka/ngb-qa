@@ -10,7 +10,7 @@
 Get sources
 ```
 git clone https://github.com/vpolyakov88/ngb-qa.git
-cd ngb2-qa
+cd ngb-qa
 ```
 
 Run tests on Saucelabs:
