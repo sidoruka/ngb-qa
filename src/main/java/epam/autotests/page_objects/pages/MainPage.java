@@ -46,7 +46,7 @@ public class MainPage extends WebPage {
             caps.setCapability("platform", os);
             caps.setCapability("version", browserVersion);
             caps.setCapability("screenResolution", screenResolutin);
-            SauceLabRunner.authentication.setUsername("lifescience");
+            SauceLabRunner.authentication.setUsername(System.getenv("SAUCE_USER_NAME"));
             SauceLabRunner.authentication.setAccessKey(System.getenv("SAUCE_ACCESS_KEY"));
             RemoteWebDriver driver = new RemoteWebDriver(SauceLabRunner.getSauceUrl(), caps);
             driver.executeScript("sauce:job-name= Autotest from travis job #" + System.getenv("TRAVIS_JOB_NUMBER") + "\"");
